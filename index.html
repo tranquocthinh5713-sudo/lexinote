@@ -113,7 +113,7 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
       <div class="grid-2">
         <div class="panel">
           <h3>✦ Tra cứu từ thông minh</h3><p class="panel-sub">Nhập từ hoặc cụm từ tiếng Anh. LexiNote sẽ tìm nghĩa và loại từ từ các nguồn từ điển trực tuyến.</p>
-          <div class="form-row"><label>TỪ / CỤM TỪ TIẾNG ANH</label><input id="lookupWord" class="field" placeholder="Nhập từ tiếng Anh..." onkeydown="if(event.key==='Enter')lookupWord()"></div>
+          <div class="form-row"><label>TỪ / CỤM TỪ TIẾNG ANH</label><input id="lookupWord" class="field" placeholder="Ví dụ: interested, run, beautiful..." onkeydown="if(event.key==='Enter')lookupWord()"></div>
           <div class="actions"><button class="btn primary" id="lookupBtn" onclick="lookupWord()">✨ Tự nhận diện nghĩa</button><button class="btn" onclick="clearLookup()">Xóa</button></div>
           <div id="lookupStatus" class="notice" aria-live="polite">Kết quả sẽ hiển thị ở đây. Cần kết nối Internet để tra cứu.</div>
           <div id="lookupResult"></div>
@@ -194,10 +194,10 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
 <script>
 const STORAGE={words:'lexinote_words_v3',bg:'lexinote_bg_v3',avatar:'lexinote_avatar_v3',name:'lexinote_name_v3',history:'lexinote_history_v3'};
 const $=id=>document.getElementById(id);
-let words=loadJSON(STORAGE.words,[]),testHistory=loadJSON(STORAGE.history,[]);
+let words=loadJSON(STORAGE.words,[]).map(w=>({id:w.id||crypto.randomUUID(),word:w.word||'',pos:w.pos||'',meaning:w.meaning||''})),testHistory=loadJSON(STORAGE.history,[]);
 let lookupCache=null,flashIndex=0,flashOrder=[],flashBack=false,testItems=[],testIndex=0,testScore=0,testAnswered=false,recognition=null,recognizedText='';
 function loadJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
-function saveWords(){localStorage.setItem(STORAGE.words,JSON.stringify(words));updateStats();renderWords();refreshSelects()}
+function saveWords(){words=words.map(w=>({id:w.id||crypto.randomUUID(),word:w.word||'',pos:w.pos||'',meaning:w.meaning||''}));localStorage.setItem(STORAGE.words,JSON.stringify(words));updateStats();renderWords();refreshSelects()}
 function escapeHTML(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function showPage(page){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+page));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));const labels={home:'Tổng quan',vocabulary:'Từ vựng',flashcards:'Flashcard',listening:'Listening',test:'Kiểm tra',grammar:'Grammar',speaking:'Speaking',reading:'Reading',appearance:'Giao diện'};$('breadcrumb').textContent='Không gian học tập / '+labels[page];if(page==='flashcards')resetFlash();if(page==='listening')refreshSelects();if(page==='grammar')renderGrammar()}
 document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
