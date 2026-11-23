@@ -108,6 +108,12 @@ select.field{cursor:pointer}
 .result-big{font-size:45px;font-weight:900;color:#3b92ad}
 .divider{height:1px;background:rgba(115,169,186,.2);margin:16px 0}
 .lookup-meaning{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.48);margin-top:8px;font-size:14px;font-weight:800;color:#426c7d}
+.grammar-card{padding:19px;border-radius:20px;border:1px solid rgba(255,255,255,.8);background:rgba(255,255,255,.42);box-shadow:0 8px 25px rgba(56,119,145,.07)}
+.grammar-card h3{margin:9px 0 7px}
+.grammar-card p{font-size:13px;color:var(--muted);font-weight:700}
+.grammar-formula{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.56);font-weight:900;color:#397e98;margin:10px 0;overflow-wrap:anywhere}
+.grammar-example{font-size:13px;color:#557b8b;font-style:italic;font-weight:700;line-height:1.6}
+.grammar-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
 @media(max-width:1050px){.app{grid-template-columns:220px 1fr}.stats{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){.app{display:block;padding:10px}.sidebar{position:relative;top:0;height:auto;margin-bottom:12px;padding:12px;border-radius:22px}.brand{padding:3px 5px 8px}.nav-list{display:flex;overflow:auto;padding-bottom:4px}.nav-label{display:none}.nav-btn{width:auto;white-space:nowrap;padding:9px 12px}.sidebar-bottom{display:none}.topbar{padding:11px 14px}.hero{padding:23px;min-height:190px}.hero-art{width:90px;height:90px;font-size:45px;border-radius:30px}.grid-2,.grid-3{grid-template-columns:1fr}.panel{padding:17px}.form-grid{grid-template-columns:1fr}}
 @media(max-width:430px){.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:21px}.hero-art{display:none}.date-pill{display:none}.hero h1{font-size:29px}}
@@ -158,7 +164,7 @@ select.field{cursor:pointer}
 <div class="grid-2">
 <div class="panel">
 <h3>✦ Tra cứu từ thông minh</h3><p class="panel-sub">Nhập từ hoặc cụm từ tiếng Anh. LexiNote sẽ tìm tối đa hai nghĩa thông dụng.</p>
-<div class="form-row"><label>TỪ / CỤM TỪ TIẾNG ANH</label><input id="lookupWord" class="field" placeholder="Ví dụ: interested, run, beautiful..." onkeydown="if(event.key==='Enter')lookupWord()"></div>
+<div class="form-row"><label>TỪ / CỤM TỪ TIẾNG ANH</label><input id="lookupWord" class="field" placeholder="Ví dụ: interested, run, look forward to..." onkeydown="if(event.key==='Enter')lookupWord()"></div>
 <div class="actions"><button class="btn primary" id="lookupBtn" onclick="lookupWord()">✨ Tra cứu</button><button class="btn" onclick="clearLookup()">Xóa</button></div>
 <div id="lookupStatus" class="notice" aria-live="polite">Kết quả sẽ hiển thị ở đây. Cần kết nối Internet để tra cứu.</div>
 <div id="lookupResult"></div>
@@ -208,8 +214,27 @@ select.field{cursor:pointer}
 </section>
 
 <section class="page" id="page-grammar">
-<div class="section-head"><div><h2>Grammar library</h2><p>Ngữ pháp nền tảng, công thức, cách dùng và ví dụ.</p></div></div>
+<div class="section-head"><div><h2>Grammar library</h2><p>Đầy đủ 12 thì tiếng Anh và kho ngữ pháp tự tạo của riêng mày.</p></div><span class="pill">12 TENSES</span></div>
+
+<div class="panel" style="margin-bottom:16px">
+<div class="section-head"><div><h3>＋ Tự thêm ngữ pháp</h3><p>Tạo ghi chú ngữ pháp riêng, lưu lại và chỉnh sửa bất cứ lúc nào.</p></div></div>
+<input type="hidden" id="grammarEditId">
+<div class="form-row"><label>TÊN CHỦ ĐIỂM NGỮ PHÁP</label><input id="customGrammarName" class="field" placeholder="Ví dụ: Passive Voice, Relative Clauses..."></div>
+<div class="form-row"><label>CÔNG THỨC</label><textarea id="customGrammarFormula" class="field" placeholder="Ví dụ: S + am/is/are + V3/ed"></textarea></div>
+<div class="form-row"><label>CÁCH DÙNG</label><textarea id="customGrammarUsage" class="field" placeholder="Ghi cách sử dụng và trường hợp áp dụng..."></textarea></div>
+<div class="form-row"><label>VÍ DỤ</label><textarea id="customGrammarExample" class="field" placeholder="Ví dụ: The room is cleaned every day."></textarea></div>
+<div class="actions">
+<button class="btn primary" id="saveGrammarBtn" onclick="saveCustomGrammar()">＋ Lưu ngữ pháp</button>
+<button class="btn" onclick="clearGrammarForm()">Làm mới</button>
+</div>
+<div class="notice" id="grammarStatus">Ngữ pháp tự thêm sẽ được lưu trên trình duyệt này.</div>
+</div>
+
+<div class="section-head"><div><h2>12 thì trong tiếng Anh</h2><p>Công thức cơ bản và ví dụ cho từng thì.</p></div></div>
 <div class="grid-2" id="grammarGrid"></div>
+
+<div class="section-head" style="margin-top:24px"><div><h2>Ngữ pháp của tao</h2><p>Các chủ điểm do mày tự tạo và lưu lại.</p></div></div>
+<div class="grid-2" id="customGrammarGrid"></div>
 </section>
 
 <section class="page" id="page-speaking">
@@ -241,12 +266,13 @@ select.field{cursor:pointer}
 </div>
 
 <script>
-const STORAGE={words:'lexinote_words_v3',bg:'lexinote_bg_v3',avatar:'lexinote_avatar_v3',name:'lexinote_name_v3',history:'lexinote_history_v3'};
+const STORAGE={words:'lexinote_words_v3',bg:'lexinote_bg_v3',avatar:'lexinote_avatar_v3',name:'lexinote_name_v3',history:'lexinote_history_v3',grammar:'lexinote_custom_grammar_v1'};
 const $=id=>document.getElementById(id);
 function loadJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
 const makeId=()=>crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2);
 let words=loadJSON(STORAGE.words,[]).map(w=>({id:w.id||makeId(),word:w.word||'',pos:w.pos||'',meaning:w.meaning||''}));
 let testHistory=loadJSON(STORAGE.history,[]);
+let customGrammar=loadJSON(STORAGE.grammar,[]);
 let lookupCache=null,flashIndex=0,flashOrder=[],flashBack=false,testItems=[],testIndex=0,testScore=0,testAnswered=false,recognition=null,recognizedText='';
 
 function escapeHTML(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -281,9 +307,11 @@ function renderWords(){
  <div class="word-actions"><button class="mini-btn" onclick="speakText(${JSON.stringify(w.word)})">▶</button><button class="mini-btn" onclick="editWord('${w.id}')">Sửa</button><button class="mini-btn" onclick="deleteWord('${w.id}')">×</button></div></div>`).join(''):'<div class="empty">Chưa có từ phù hợp. Hãy tra và lưu từ đầu tiên nhé.</div>';
 }
 function addWord(){
- const word=$('newWord').value.trim(),pos=$('newPos').value.trim();
+ const word=$('newWord').value.trim();
+ let pos=$('newPos').value.trim();
  const meaning=$('newMeaning').value.trim().split(/\n|;/).map(x=>x.trim()).filter(Boolean).slice(0,2).join('\n');
  if(!word||!meaning){$('addStatus').textContent='Cần nhập từ tiếng Anh và ít nhất một nghĩa.';return}
+ if(/\s/.test(word))pos='(cụm Từ)';
  const existing=words.find(w=>w.word.toLowerCase()===word.toLowerCase());
  const data={id:existing?.id||makeId(),word,pos,meaning};
  if(existing)Object.assign(existing,data);else words.unshift(data);
@@ -310,7 +338,7 @@ function importWords(e){
    data.forEach(w=>{
     if(w.word&&w.meaning){
      const old=words.find(x=>x.word.toLowerCase()===w.word.toLowerCase());
-     const clean={id:old?.id||w.id||makeId(),word:w.word,pos:w.pos||'',meaning:String(w.meaning).split(/\n|;/).map(x=>x.trim()).filter(Boolean).slice(0,2).join('\n')};
+     const clean={id:old?.id||w.id||makeId(),word:w.word,pos:/\s/.test(w.word)?'(cụm Từ)':(w.pos||''),meaning:String(w.meaning).split(/\n|;/).map(x=>x.trim()).filter(Boolean).slice(0,2).join('\n')};
      if(old)Object.assign(old,clean);else words.push(clean);
     }
    });
@@ -329,7 +357,7 @@ async function fetchJSON(url,timeout=10000){
  finally{clearTimeout(timer)}
 }
 
-/* TRA CỨU THÔNG MINH: TỐI ĐA HAI NGHĨA */
+/* TRA CỨU THÔNG MINH: TỐI ĐA HAI NGHĨA, KHÔNG LƯU VÍ DỤ */
 function splitMeanings(text){
  return String(text||'')
   .replace(/[，;]/g,',')
@@ -369,8 +397,8 @@ async function lookupWord(){
  }));
 
  const meanings=splitMeanings(translation);
- const pos=[...posSet].slice(0,2).join(', ')||'Chưa xác định';
- const found=meanings.length>0||posSet.size>0;
+ const isPhrase=/\s/.test(word);
+ const pos=isPhrase?'(cụm Từ)':([...posSet].slice(0,2).join(', ')||'Chưa xác định');
 
  if(meanings.length){
   lookupCache={word,pos,meaning:meanings.join('\n')};
@@ -379,8 +407,8 @@ async function lookupWord(){
    <h3>${escapeHTML(word)} <span class="pill">${escapeHTML(pos)}</span></h3>
    ${meanings.map((m,i)=>`<div class="lookup-meaning"><b>${i+1}.</b> ${escapeHTML(m)}</div>`).join('')}
    <div class="actions"><button class="btn primary" onclick="saveLookup()">＋ Lưu vào kho</button></div>`;
- }else if(posSet.size){
-  $('lookupResult').innerHTML='<div class="empty">Tìm thấy loại từ nhưng chưa có bản dịch tiếng Việt đáng tin cậy. Mày có thể nhập nghĩa thủ công ở bên cạnh.</div>';
+ }else if(posSet.size||isPhrase){
+  $('lookupResult').innerHTML='<div class="empty">Tìm thấy thông tin loại từ nhưng chưa có bản dịch tiếng Việt đáng tin cậy. Mày có thể nhập nghĩa thủ công ở bên cạnh.</div>';
  }else{
   $('lookupResult').innerHTML='<div class="empty">Không tìm thấy dữ liệu đáng tin cậy cho từ này. Thử kiểm tra chính tả hoặc nhập thủ công.</div>';
  }
@@ -460,7 +488,7 @@ function renderQuestion(){
  const w=testItems[testIndex],en=$('testDirection').value==='en';
  const correct=en?w.meaning:w.word;
  const pool=words.filter(x=>x.id!==w.id).sort(()=>Math.random()-.5).slice(0,3).map(x=>en?x.meaning:x.word);
- const options=[correct,...pool].sort(()=>Math.random()-.5);
+ const options=[...new Set([correct,...pool])].sort(()=>Math.random()-.5);
  $('questionCounter').textContent=`Câu ${testIndex+1} / ${testItems.length}`;
  $('questionScore').textContent='Đúng: '+testScore;
  $('testBar').style.width=(testIndex/testItems.length*100)+'%';
@@ -498,20 +526,101 @@ function renderHistory(){
  $('testHistory').innerHTML=testHistory.length?testHistory.map(h=>`<div class="word-card"><div><strong>${h.score}%</strong><p>${h.date} · ${h.correct}/${h.total} câu đúng</p></div></div>`).join(''):'<div class="empty">Chưa có lịch sử kiểm tra.</div>';
 }
 
+/* 12 THÌ TIẾNG ANH */
 const grammar=[
-['Present Simple','Thói quen, sự thật hiển nhiên.','S + V(s/es)','She studies English every day.'],
-['Present Continuous','Hành động đang diễn ra tại thời điểm nói.','S + am/is/are + V-ing','I am reading a book now.'],
-['Past Simple','Hành động đã xảy ra và kết thúc trong quá khứ.','S + V2/ed','We visited Da Nang last summer.'],
-['Present Perfect','Trải nghiệm hoặc hành động có liên hệ hiện tại.','S + have/has + V3/ed','I have learned ten new words.'],
-['Future Simple','Dự đoán, quyết định hoặc sự việc tương lai.','S + will + V nguyên mẫu','I will practice tomorrow.'],
-['Comparatives','So sánh hai người hoặc hai vật.','adj-er / more + adj + than','This book is more interesting than that one.'],
-['Modal verbs','Diễn tả khả năng, lời khuyên, nghĩa vụ.','can / should / must + V nguyên mẫu','You should review your notes.'],
-['Gerund & Infinitive','Một số động từ theo sau bởi V-ing hoặc to V.','enjoy + V-ing; want + to V','I enjoy reading. / I want to improve.'],
-['Prepositions','Giới từ chỉ thời gian, nơi chốn và quan hệ.','in / on / at / for / since...','I study at 7 p.m.'],
-['Conditionals type 1','Điều kiện có thể xảy ra ở hiện tại hoặc tương lai.','If + present simple, will + V','If I practice, I will improve.']
+{name:'Present Simple',usage:'Diễn tả thói quen, sự thật hiển nhiên hoặc lịch trình cố định.',formula:'(+) S + V(s/es)\\n(-) S + do/does + not + V\\n(?) Do/Does + S + V?',example:'She studies English every day.'},
+{name:'Present Continuous',usage:'Diễn tả hành động đang xảy ra tại thời điểm nói hoặc quanh thời điểm hiện tại.',formula:'(+) S + am/is/are + V-ing\\n(-) S + am/is/are + not + V-ing\\n(?) Am/Is/Are + S + V-ing?',example:'I am reading a book now.'},
+{name:'Present Perfect',usage:'Diễn tả trải nghiệm, hành động vừa xảy ra hoặc hành động có liên hệ đến hiện tại.',formula:'(+) S + have/has + V3/ed\\n(-) S + have/has + not + V3/ed\\n(?) Have/Has + S + V3/ed?',example:'I have learned ten new words.'},
+{name:'Present Perfect Continuous',usage:'Nhấn mạnh hành động bắt đầu trong quá khứ và vẫn đang tiếp diễn, thường chú trọng khoảng thời gian.',formula:'(+) S + have/has + been + V-ing\\n(-) S + have/has + not + been + V-ing\\n(?) Have/Has + S + been + V-ing?',example:'She has been studying for two hours.'},
+{name:'Past Simple',usage:'Diễn tả hành động đã xảy ra và kết thúc trong quá khứ.',formula:'(+) S + V2/ed\\n(-) S + did + not + V\\n(?) Did + S + V?',example:'We visited Da Nang last summer.'},
+{name:'Past Continuous',usage:'Diễn tả hành động đang diễn ra tại một thời điểm trong quá khứ hoặc làm nền cho hành động khác.',formula:'(+) S + was/were + V-ing\\n(-) S + was/were + not + V-ing\\n(?) Was/Were + S + V-ing?',example:'I was doing my homework at 8 p.m. yesterday.'},
+{name:'Past Perfect',usage:'Diễn tả hành động xảy ra trước một hành động hoặc thời điểm khác trong quá khứ.',formula:'(+) S + had + V3/ed\\n(-) S + had + not + V3/ed\\n(?) Had + S + V3/ed?',example:'She had left before I arrived.'},
+{name:'Past Perfect Continuous',usage:'Nhấn mạnh quá trình hoặc khoảng thời gian của hành động diễn ra trước một mốc trong quá khứ.',formula:'(+) S + had + been + V-ing\\n(-) S + had + not + been + V-ing\\n(?) Had + S + been + V-ing?',example:'They had been waiting for an hour before the bus came.'},
+{name:'Future Simple',usage:'Diễn tả dự đoán, quyết định tức thời, lời hứa hoặc sự việc trong tương lai.',formula:'(+) S + will + V\\n(-) S + will + not + V\\n(?) Will + S + V?',example:'I will practice tomorrow.'},
+{name:'Future Continuous',usage:'Diễn tả hành động sẽ đang diễn ra tại một thời điểm xác định trong tương lai.',formula:'(+) S + will + be + V-ing\\n(-) S + will + not + be + V-ing\\n(?) Will + S + be + V-ing?',example:'This time tomorrow, I will be studying.'},
+{name:'Future Perfect',usage:'Diễn tả hành động sẽ hoàn thành trước một thời điểm hoặc hành động khác trong tương lai.',formula:'(+) S + will + have + V3/ed\\n(-) S + will + not + have + V3/ed\\n(?) Will + S + have + V3/ed?',example:'By Friday, I will have finished the project.'},
+{name:'Future Perfect Continuous',usage:'Nhấn mạnh khoảng thời gian một hành động sẽ diễn ra tính đến một mốc trong tương lai.',formula:'(+) S + will + have + been + V-ing\\n(-) S + will + not + have + been + V-ing\\n(?) Will + S + have + been + V-ing?',example:'By June, she will have been working here for five years.'}
 ];
+
 function renderGrammar(){
- $('grammarGrid').innerHTML=grammar.map((g,i)=>`<article class="lesson-card"><span class="pill">GRAMMAR ${String(i+1).padStart(2,'0')}</span><h3>${g[0]}</h3><p>${g[1]}</p><div class="notice"><b>${g[2]}</b><br><i>${g[3]}</i></div></article>`).join('');
+ $('grammarGrid').innerHTML=grammar.map((g,i)=>`
+ <article class="grammar-card">
+  <span class="pill">TENSE ${String(i+1).padStart(2,'0')}</span>
+  <h3>${escapeHTML(g.name)}</h3>
+  <p>${escapeHTML(g.usage)}</p>
+  <div class="grammar-formula">${escapeHTML(g.formula).replace(/\n/g,'<br>')}</div>
+  <div class="grammar-example">Example: ${escapeHTML(g.example)}</div>
+ </article>`).join('');
+ renderCustomGrammar();
+}
+function saveCustomGrammar(){
+ const name=$('customGrammarName').value.trim();
+ const formula=$('customGrammarFormula').value.trim();
+ const usage=$('customGrammarUsage').value.trim();
+ const example=$('customGrammarExample').value.trim();
+ const editId=$('grammarEditId').value;
+ if(!name||!formula||!usage){
+  $('grammarStatus').textContent='Hãy nhập tên chủ điểm, công thức và cách dùng.';
+  return;
+ }
+ if(editId){
+  const item=customGrammar.find(g=>g.id===editId);
+  if(item)Object.assign(item,{name,formula,usage,example});
+  $('grammarStatus').textContent='Đã cập nhật chủ điểm ngữ pháp.';
+ }else{
+  customGrammar.unshift({id:makeId(),name,formula,usage,example});
+  $('grammarStatus').textContent='Đã thêm chủ điểm ngữ pháp mới.';
+ }
+ localStorage.setItem(STORAGE.grammar,JSON.stringify(customGrammar));
+ clearGrammarForm(false);
+ renderCustomGrammar();
+}
+function renderCustomGrammar(){
+ const grid=$('customGrammarGrid');
+ if(!grid)return;
+ grid.innerHTML=customGrammar.length?customGrammar.map(g=>`
+ <article class="grammar-card">
+  <span class="pill">MY GRAMMAR</span>
+  <h3>${escapeHTML(g.name)}</h3>
+  <p>${escapeHTML(g.usage)}</p>
+  <div class="grammar-formula">${escapeHTML(g.formula).replace(/\n/g,'<br>')}</div>
+  ${g.example?`<div class="grammar-example">Example: ${escapeHTML(g.example)}</div>`:''}
+  <div class="grammar-actions">
+   <button class="mini-btn" onclick="editCustomGrammar('${g.id}')">Sửa</button>
+   <button class="mini-btn" onclick="deleteCustomGrammar('${g.id}')">Xóa</button>
+  </div>
+ </article>`).join(''):'<div class="empty" style="grid-column:1/-1">Chưa có ngữ pháp tự tạo. Hãy thêm chủ điểm đầu tiên ở biểu mẫu phía trên.</div>';
+}
+function editCustomGrammar(id){
+ const g=customGrammar.find(x=>x.id===id);
+ if(!g)return;
+ $('grammarEditId').value=g.id;
+ $('customGrammarName').value=g.name;
+ $('customGrammarFormula').value=g.formula;
+ $('customGrammarUsage').value=g.usage;
+ $('customGrammarExample').value=g.example||'';
+ $('saveGrammarBtn').textContent='Lưu thay đổi';
+ $('grammarStatus').textContent='Đang chỉnh sửa: '+g.name;
+ $('customGrammarName').focus();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function deleteCustomGrammar(id){
+ const g=customGrammar.find(x=>x.id===id);
+ if(!g||!confirm('Xóa chủ điểm "'+g.name+'" khỏi ngữ pháp của mày?'))return;
+ customGrammar=customGrammar.filter(x=>x.id!==id);
+ localStorage.setItem(STORAGE.grammar,JSON.stringify(customGrammar));
+ renderCustomGrammar();
+ $('grammarStatus').textContent='Đã xóa chủ điểm ngữ pháp.';
+ if($('grammarEditId').value===id)clearGrammarForm();
+}
+function clearGrammarForm(showMessage=true){
+ $('grammarEditId').value='';
+ $('customGrammarName').value='';
+ $('customGrammarFormula').value='';
+ $('customGrammarUsage').value='';
+ $('customGrammarExample').value='';
+ $('saveGrammarBtn').textContent='＋ Lưu ngữ pháp';
+ if(showMessage)$('grammarStatus').textContent='Biểu mẫu đã được làm mới.';
 }
 
 const passages=[
@@ -522,7 +631,7 @@ const passages=[
 let readingAnswered=false;
 function loadReading(){
  const p=passages[Number($('readingSelect').value)];
- $('readingText').innerHTML=p.text.split(/(\b[a-zA-Z']+\b)/).map(t=>/^[a-zA-Z']+$/.test(t)?`<span class="tapword" onclick="lookupReadingWord('${t.toLowerCase()}')">${t}</span>`:escapeHTML(t)).join('');
+ $('readingText').innerHTML=p.text.split(/(\b[a-zA-Z']+\b)/).map(t=>/^[a-zA-Z']+$/.test(t)?`<span class="tapword" onclick="lookupReadingWord('${t.toLowerCase()}')">${escapeHTML(t)}</span>`:escapeHTML(t)).join('');
  $('readingQuestion').innerHTML=`<b>${p.q}</b><div class="choice-list">${p.opts.map((o,i)=>`<button class="choice" onclick="answerReading(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div>`;
  $('readingFeedback').textContent='Chọn câu trả lời để kiểm tra.';readingAnswered=false;
 }
