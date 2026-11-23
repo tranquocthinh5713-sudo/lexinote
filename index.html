@@ -114,6 +114,9 @@ select.field{cursor:pointer}
 .grammar-formula{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.56);font-weight:900;color:#397e98;margin:10px 0;overflow-wrap:anywhere}
 .grammar-example{font-size:13px;color:#557b8b;font-style:italic;font-weight:700;line-height:1.6}
 .grammar-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.author-box{margin-top:16px;padding:17px;border:1px dashed rgba(94,166,190,.42);border-radius:19px;background:rgba(255,255,255,.28)}
+.author-box h3{margin-bottom:6px}.author-box .form-row:last-child{margin-bottom:0}
+.lesson-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}
 @media(max-width:1050px){.app{grid-template-columns:220px 1fr}.stats{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){.app{display:block;padding:10px}.sidebar{position:relative;top:0;height:auto;margin-bottom:12px;padding:12px;border-radius:22px}.brand{padding:3px 5px 8px}.nav-list{display:flex;overflow:auto;padding-bottom:4px}.nav-label{display:none}.nav-btn{width:auto;white-space:nowrap;padding:9px 12px}.sidebar-bottom{display:none}.topbar{padding:11px 14px}.hero{padding:23px;min-height:190px}.hero-art{width:90px;height:90px;font-size:45px;border-radius:30px}.grid-2,.grid-3{grid-template-columns:1fr}.panel{padding:17px}.form-grid{grid-template-columns:1fr}}
 @media(max-width:430px){.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:21px}.hero-art{display:none}.date-pill{display:none}.hero h1{font-size:29px}}
@@ -207,7 +210,7 @@ select.field{cursor:pointer}
 <section class="page" id="page-test">
 <div class="section-head"><div><h2>Vocabulary challenge</h2><p>Bài kiểm tra lấy câu hỏi trực tiếp từ kho từ vựng đã lưu.</p></div></div>
 <div class="grid-2">
-<div class="panel"><h3>Thiết lập bài kiểm tra</h3><p class="panel-sub">Cần ít nhất 2 từ trong kho để tạo bài kiểm tra.</p><div class="form-row"><label>HƯỚNG KIỂM TRA</label><select class="field" id="testDirection"><option value="en">Anh → Việt</option><option value="vi">Việt → Anh</option></select></div><div class="form-row"><label>SỐ CÂU</label><select class="field" id="testCount"><option>5</option><option>10</option><option>15</option><option>20</option></select></div><button class="btn primary" onclick="startTest()">Bắt đầu kiểm tra →</button><div class="notice" id="testSetupStatus">Mỗi câu có 4 lựa chọn. Kết quả được lưu trên thiết bị.</div></div>
+<div class="panel"><h3>Thiết lập bài kiểm tra</h3><p class="panel-sub">Cần ít nhất 2 từ trong kho để tạo bài kiểm tra.</p><div class="form-row"><label>HƯỚNG KIỂM TRA</label><select class="field" id="testDirection"><option value="en">Anh → Việt</option><option value="vi">Việt → Anh</option></select></div><div class="form-row"><label>SỐ CÂU</label><select class="field" id="testCount"><option>5</option><option>10</option><option>15</option><option>20</option></select></div><button class="btn primary" onclick="startTest()">Bắt đầu kiểm tra →</button><div class="notice" id="testSetupStatus">Mỗi câu có tối đa 4 lựa chọn khác nhau; số câu tự điều chỉnh theo kho từ. Kết quả được lưu trên thiết bị.</div></div>
 <div class="panel" id="testPanel"><div id="testIntro"><h3>🎯 Sẵn sàng thử sức?</h3><p class="muted">Chọn số câu và hướng kiểm tra, sau đó bắt đầu. Hệ thống sẽ trộn câu hỏi để mỗi lượt luyện tập khác nhau.</p></div><div id="testQuestion" hidden><div style="display:flex;justify-content:space-between"><span class="pill" id="questionCounter">Câu 1</span><span class="pill" id="questionScore">Đúng: 0</span></div><div class="progress"><span id="testBar"></span></div><h2 id="questionText" style="margin:18px 0 8px"></h2><div id="choiceList" class="choice-list"></div><div class="notice" id="answerFeedback" aria-live="polite">Chọn một đáp án.</div><button class="btn primary" id="nextQuestionBtn" onclick="nextQuestion()" hidden style="margin-top:12px">Câu tiếp theo →</button></div><div id="testResult" hidden></div></div>
 </div>
 <div class="panel" style="margin-top:16px"><h3>Lịch sử luyện tập</h3><div id="testHistory" class="word-list"></div></div>
@@ -238,19 +241,39 @@ select.field{cursor:pointer}
 </section>
 
 <section class="page" id="page-speaking">
-<div class="section-head"><div><h2>Speaking practice</h2><p>Luyện đọc thành tiếng và kiểm tra nội dung bằng nhận diện giọng nói nếu trình duyệt hỗ trợ.</p></div></div>
+<div class="section-head"><div><h2>Speaking practice</h2><p>Chọn bài có sẵn hoặc tự nhập bài nói của mày để luyện đọc và nhận diện giọng nói.</p></div></div>
 <div class="grid-2">
-<div class="panel"><h3>🎙 Đọc câu mẫu</h3><p class="panel-sub">Chọn câu để nghe mẫu, sau đó tự đọc lại.</p><select id="speakPrompt" class="field"><option>The more you practice, the more confident you become.</option><option>Learning a new language takes time and patience.</option><option>I usually review my vocabulary before going to bed.</option><option>Small steps every day can make a big difference.</option></select><div class="actions"><button class="btn" onclick="speakPromptText()">▶ Nghe mẫu</button><button class="btn primary" onclick="startSpeechRecognition()">🎙 Bắt đầu nói</button><button class="btn" onclick="stopRecognition()">Dừng</button></div><div id="speechStatus" class="notice" aria-live="polite">Nhận diện giọng nói cần trình duyệt hỗ trợ và có thể cần quyền micro.</div></div>
-<div class="panel"><h3>Kết quả nhận diện</h3><div id="speechResult" class="reading-passage" style="min-height:130px">Phần mày nói sẽ xuất hiện ở đây.</div><div class="actions"><button class="btn" onclick="compareSpeech()">Đối chiếu câu mẫu</button></div><div id="speechCompare" class="notice">Nhận diện giọng nói chỉ chuyển lời nói thành văn bản, không phải chấm phát âm chuyên nghiệp.</div></div>
+<div class="panel"><h3>🎙 Bài luyện nói</h3><p class="panel-sub">Chọn một chủ đề, chỉnh nội dung nếu muốn, nghe mẫu rồi tự đọc lại.</p>
+<div class="form-row"><label>CHỌN BÀI SPEAKING</label><select id="speakLessonSelect" class="field" onchange="selectSpeakingLesson()"></select></div>
+<div class="form-row"><label>NỘI DUNG BÀI NÓI</label><textarea id="speakPrompt" class="field" style="min-height:145px" placeholder="Bài nói tiếng Anh của mày..."></textarea></div>
+<div class="actions"><button class="btn" onclick="speakPromptText()">▶ Nghe mẫu</button><button class="btn primary" onclick="startSpeechRecognition()">🎙 Bắt đầu nói</button><button class="btn" onclick="stopRecognition()">Dừng</button></div>
+<div id="speechStatus" class="notice" aria-live="polite">Nhận diện giọng nói cần trình duyệt hỗ trợ và có thể cần quyền micro.</div></div>
+<div class="panel"><h3>Kết quả nhận diện</h3><div id="speechResult" class="reading-passage" style="min-height:130px">Phần mày nói sẽ xuất hiện ở đây.</div><div class="actions"><button class="btn" onclick="compareSpeech()">Đối chiếu bài nói</button></div><div id="speechCompare" class="notice">Công cụ chỉ so khớp văn bản được nhận diện, không chấm phát âm chuyên nghiệp.</div></div>
 </div>
+<div class="panel author-box"><h3>＋ Tự nhập bài Speaking</h3><p class="panel-sub">Tạo bài nói của riêng mày. Bài sẽ được lưu trên trình duyệt và xuất hiện trong danh sách.</p>
+<div class="form-row"><label>TÊN BÀI NÓI</label><input id="newSpeakingTitle" class="field" maxlength="80" placeholder="Ví dụ: My Favorite Hobby"></div>
+<div class="form-row"><label>NỘI DUNG TIẾNG ANH</label><textarea id="newSpeakingText" class="field" style="min-height:130px" placeholder="Write your speaking passage here..."></textarea></div>
+<div class="actions"><button class="btn primary" onclick="addSpeakingLesson()">＋ Lưu bài Speaking</button><button class="btn danger" onclick="deleteSpeakingLesson()">Xóa bài tự tạo đang chọn</button></div>
+<div id="speakingAuthorStatus" class="notice">Bài tự tạo được lưu cục bộ trên thiết bị này.</div></div>
 </section>
 
 <section class="page" id="page-reading">
-<div class="section-head"><div><h2>Reading corner</h2><p>Đọc đoạn văn, tra nhanh từ được chọn và trả lời câu hỏi.</p></div></div>
+<div class="section-head"><div><h2>Reading corner</h2><p>Đọc bài có sẵn, tự thêm bài đọc và luyện trả lời câu hỏi.</p></div></div>
 <div class="grid-2">
-<div class="panel"><div class="form-row"><label>CHỌN BÀI ĐỌC</label><select id="readingSelect" class="field" onchange="loadReading()"><option value="0">A Small Daily Habit</option><option value="1">The Power of Libraries</option><option value="2">Learning from Mistakes</option></select></div><div class="reading-passage" id="readingText"></div><div class="notice" id="readingLookup">Chạm vào một từ được gạch chân để xem nghĩa nếu từ đó có trong kho.</div></div>
+<div class="panel"><div class="form-row"><label>CHỌN BÀI ĐỌC</label><select id="readingSelect" class="field" onchange="loadReading()"></select></div><div class="lesson-meta"><span class="pill" id="readingLength">READING</span><span class="muted small">Nhấn vào từ gạch chân để tra trong kho từ vựng.</span></div><div class="reading-passage" id="readingText"></div><div class="notice" id="readingLookup">Chạm vào một từ được gạch chân để xem nghĩa nếu từ đó có trong kho.</div></div>
 <div class="panel"><h3>Comprehension check</h3><p class="panel-sub">Chọn đáp án đúng dựa trên bài đọc.</p><div id="readingQuestion"></div><div id="readingFeedback" class="notice">Chọn câu trả lời để kiểm tra.</div><button class="btn" style="margin-top:12px" onclick="loadReading()">Làm lại bài</button></div>
 </div>
+<div class="panel author-box"><h3>＋ Tự nhập bài Reading</h3><p class="panel-sub">Mày có thể tự thêm đoạn văn và câu hỏi trắc nghiệm. Các bài đã lưu sẽ nằm trong danh sách chọn.</p>
+<div class="form-row"><label>TÊN BÀI ĐỌC</label><input id="newReadingTitle" class="field" maxlength="80" placeholder="Ví dụ: The Benefits of Reading"></div>
+<div class="form-row"><label>ĐOẠN VĂN TIẾNG ANH</label><textarea id="newReadingText" class="field" style="min-height:150px" placeholder="Paste or write your reading passage here..."></textarea></div>
+<div class="form-row"><label>CÂU HỎI ĐỌC HIỂU</label><input id="newReadingQuestion" class="field" placeholder="What is the main idea of the passage?"></div>
+<div class="form-row"><label>4 LỰA CHỌN (MỖI LỰA CHỌN MỘT DÒNG)</label><textarea id="newReadingOptions" class="field" placeholder="Option A
+Option B
+Option C
+Option D"></textarea></div>
+<div class="form-row"><label>ĐÁP ÁN ĐÚNG</label><select id="newReadingAnswer" class="field"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></div>
+<div class="actions"><button class="btn primary" onclick="addReadingLesson()">＋ Lưu bài Reading</button><button class="btn danger" onclick="deleteReadingLesson()">Xóa bài tự tạo đang chọn</button></div>
+<div id="readingAuthorStatus" class="notice">Bài đọc tự tạo và câu hỏi được lưu trên trình duyệt này.</div></div>
 </section>
 
 <section class="page" id="page-appearance">
@@ -266,13 +289,16 @@ select.field{cursor:pointer}
 </div>
 
 <script>
-const STORAGE={words:'lexinote_words_v3',bg:'lexinote_bg_v3',avatar:'lexinote_avatar_v3',name:'lexinote_name_v3',history:'lexinote_history_v3',grammar:'lexinote_custom_grammar_v1'};
+const STORAGE={words:'lexinote_words_v3',bg:'lexinote_bg_v3',avatar:'lexinote_avatar_v3',name:'lexinote_name_v3',history:'lexinote_history_v3',grammar:'lexinote_custom_grammar_v1',speaking:'lexinote_custom_speaking_v1',reading:'lexinote_custom_reading_v1'};
 const $=id=>document.getElementById(id);
 function loadJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
 const makeId=()=>crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2);
 let words=loadJSON(STORAGE.words,[]).map(w=>({id:w.id||makeId(),word:w.word||'',pos:w.pos||'',meaning:w.meaning||''}));
 let testHistory=loadJSON(STORAGE.history,[]);
 let customGrammar=loadJSON(STORAGE.grammar,[]);
+let customSpeaking=loadJSON(STORAGE.speaking,[]);
+let customReading=loadJSON(STORAGE.reading,[]);
+let testOptions=[];
 let lookupCache=null,flashIndex=0,flashOrder=[],flashBack=false,testItems=[],testIndex=0,testScore=0,testAnswered=false,recognition=null,recognizedText='';
 
 function escapeHTML(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -429,14 +455,16 @@ function clearLookup(){
  lookupCache=null;
 }
 
-function resetFlash(){flashOrder=words.map((_,i)=>i);flashIndex=0;flashBack=false;renderFlash()}
+/* FLASHCARD: dùng ID ổn định để không lệch thẻ khi thêm/xóa/sửa từ */
+function resetFlash(){flashOrder=words.map(w=>w.id);flashIndex=0;flashBack=false;renderFlash()}
 function renderFlash(){
- const w=words[flashOrder[flashIndex]];
- if(!w){
-  $('flashFace').textContent='LEXINOTE';$('flashWord').textContent='Chưa có từ vựng';
-  $('flashHint').textContent='Thêm từ trong mục Từ vựng để bắt đầu';
-  $('flashProgress').textContent='0 / 0';$('flashBar').style.width='0';return;
- }
+ const valid=new Set(words.map(w=>w.id));
+ flashOrder=flashOrder.filter(id=>valid.has(id));
+ const included=new Set(flashOrder);
+ words.forEach(w=>{if(!included.has(w.id))flashOrder.push(w.id)});
+ if(flashIndex>=flashOrder.length)flashIndex=Math.max(0,flashOrder.length-1);
+ const w=words.find(item=>item.id===flashOrder[flashIndex]);
+ if(!w){$('flashFace').textContent='LEXINOTE';$('flashWord').textContent='Chưa có từ vựng';$('flashHint').textContent='Thêm từ trong mục Từ vựng để bắt đầu';$('flashProgress').textContent='0 / 0';$('flashBar').style.width='0%';return}
  const en=$('flashDirection').value==='en';
  $('flashFace').textContent=flashBack?(en?'VIETNAMESE':'ENGLISH'):(en?'ENGLISH':'VIETNAMESE');
  $('flashWord').textContent=flashBack?(en?w.meaning:w.word):(en?w.word:w.meaning);
@@ -447,11 +475,13 @@ function renderFlash(){
 function flipCard(){if(!words.length)return;flashBack=!flashBack;renderFlash()}
 function nextFlash(){if(!flashOrder.length)return;flashIndex=(flashIndex+1)%flashOrder.length;flashBack=false;renderFlash()}
 function prevFlash(){if(!flashOrder.length)return;flashIndex=(flashIndex-1+flashOrder.length)%flashOrder.length;flashBack=false;renderFlash()}
-function shuffleFlash(){flashOrder.sort(()=>Math.random()-.5);flashIndex=0;flashBack=false;renderFlash()}
+function shuffleFlash(){if(!flashOrder.length)return;for(let i=flashOrder.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[flashOrder[i],flashOrder[j]]=[flashOrder[j],flashOrder[i]]}flashIndex=0;flashBack=false;renderFlash()}
 function refreshSelects(){
  const s=$('listenSelect');if(!s)return;
+ const oldId=words[Number(s.value)]?.id;
  s.innerHTML=words.length?words.map((w,i)=>`<option value="${i}">${escapeHTML(w.word)}</option>`).join(''):'<option value="">Chưa có từ</option>';
- loadListenWord();resetFlash();
+ const nextIndex=words.findIndex(w=>w.id===oldId);s.value=String(nextIndex>=0?nextIndex:0);
+ loadListenWord();renderFlash();
 }
 function loadListenWord(){
  const w=words[Number($('listenSelect').value)];
@@ -478,34 +508,37 @@ if('speechSynthesis'in window){getVoices();speechSynthesis.onvoiceschanged=getVo
 
 function startTest(){
  if(words.length<2){$('testSetupStatus').textContent='Cần ít nhất 2 từ đã lưu để tạo bài kiểm tra.';return}
- const count=Math.min(Number($('testCount').value),words.length);
+ const requested=Math.max(2,Number($('testCount').value)||5);
+ const count=Math.min(requested,words.length);
  testItems=[...words].sort(()=>Math.random()-.5).slice(0,count);
  testIndex=0;testScore=0;testAnswered=false;
  $('testIntro').hidden=true;$('testResult').hidden=true;$('testQuestion').hidden=false;
+ $('testSetupStatus').textContent=`Đã tạo bài kiểm tra gồm ${count} câu.`;
  renderQuestion();
 }
 function renderQuestion(){
  const w=testItems[testIndex],en=$('testDirection').value==='en';
  const correct=en?w.meaning:w.word;
- const pool=words.filter(x=>x.id!==w.id).sort(()=>Math.random()-.5).slice(0,3).map(x=>en?x.meaning:x.word);
- const options=[...new Set([correct,...pool])].sort(()=>Math.random()-.5);
+ const pool=words.filter(x=>x.id!==w.id).map(x=>en?x.meaning:x.word).filter(x=>x&&x!==correct);
+ const uniquePool=[...new Set(pool)].sort(()=>Math.random()-.5);
+ testOptions=[correct,...uniquePool.slice(0,3)].sort(()=>Math.random()-.5);
  $('questionCounter').textContent=`Câu ${testIndex+1} / ${testItems.length}`;
  $('questionScore').textContent='Đúng: '+testScore;
  $('testBar').style.width=(testIndex/testItems.length*100)+'%';
  $('questionText').textContent=en?w.word:w.meaning;
- $('choiceList').innerHTML=options.map((o,i)=>`<button class="choice" onclick="answerQuestion(this,${JSON.stringify(o).replace(/</g,'\\u003c')})">${String.fromCharCode(65+i)}. ${escapeHTML(o)}</button>`).join('');
+ $('choiceList').innerHTML=testOptions.map((o,i)=>`<button class="choice" onclick="answerQuestion(this,${i})">${String.fromCharCode(65+i)}. ${escapeHTML(o)}</button>`).join('');
  $('answerFeedback').textContent='Chọn một đáp án.';
  $('nextQuestionBtn').hidden=true;testAnswered=false;
 }
-function answerQuestion(btn,value){
+function answerQuestion(btn,index){
  if(testAnswered)return;testAnswered=true;
  const w=testItems[testIndex],correct=$('testDirection').value==='en'?w.meaning:w.word;
- document.querySelectorAll('#choiceList .choice').forEach(b=>{
-  const raw=b.textContent.replace(/^[A-D]\.\s*/,'');
-  if(raw===correct)b.classList.add('correct');else if(b===btn)b.classList.add('wrong');
+ document.querySelectorAll('#choiceList .choice').forEach((b,i)=>{
+  if(testOptions[i]===correct)b.classList.add('correct');
+  else if(b===btn)b.classList.add('wrong');
   b.disabled=true;
  });
- if(value===correct){testScore++;$('answerFeedback').textContent='Chính xác! +1 điểm.'}
+ if(testOptions[index]===correct){testScore++;$('answerFeedback').textContent='Chính xác! +1 điểm.'}
  else $('answerFeedback').textContent='Chưa đúng. Đáp án: '+correct;
  $('questionScore').textContent='Đúng: '+testScore;
  $('nextQuestionBtn').hidden=false;
@@ -626,24 +659,87 @@ function clearGrammarForm(showMessage=true){
 const passages=[
 {title:'A Small Daily Habit',text:'Many students think that learning English requires several hours every day. In fact, a small habit can make a big difference. You can learn five new words, listen to a short story, or read one page before going to bed. The most important thing is to practice regularly. After a few weeks, you may notice that understanding English becomes easier.',q:'What is the most important thing according to the passage?',opts:['Practice regularly','Study only at weekends','Memorize one hundred words','Avoid listening'],a:0},
 {title:'The Power of Libraries',text:'A library is more than a place with books. It is a quiet space where people can explore new ideas, study together, and develop their imagination. Many libraries also provide computers and free learning activities. Even in the digital age, libraries remain valuable because they help everyone access knowledge.',q:'Why do libraries remain valuable?',opts:['They sell new computers','They help people access knowledge','They are always crowded','They replace all schools'],a:1},
-{title:'Learning from Mistakes',text:'Making mistakes is a natural part of learning. When students make an error, they can discover what they do not understand yet. Instead of feeling embarrassed, they should look at the correction and try again. Every mistake can become useful information that helps a learner improve.',q:'What should students do after making a mistake?',opts:['Stop studying','Hide the mistake','Look at the correction and try again','Blame other people'],a:2}
+{title:'Learning from Mistakes',text:'Making mistakes is a natural part of learning. When students make an error, they can discover what they do not understand yet. Instead of feeling embarrassed, they should look at the correction and try again. Every mistake can become useful information that helps a learner improve.',q:'What should students do after making a mistake?',opts:['Stop studying','Hide the mistake','Look at the correction and try again','Blame other people'],a:2},
+{title:'A Greener School',text:'Our school has started a small environmental project. Students put paper, plastic bottles, and cans into different recycling bins. Each class also takes care of a few plants near the windows. These simple actions help keep the school clean and teach students to protect nature. The project reminds everyone that a greener environment begins with daily choices.',q:'What do students do as part of the project?',opts:['Use more plastic','Recycle rubbish and care for plants','Cut down trees','Stop cleaning classrooms'],a:1},
+{title:'The Value of Teamwork',text:'Teamwork is useful because people can share ideas and support one another. In a group project, each student may have a different strength. One person can collect information, another can design the presentation, and someone else can check the writing. When everyone listens and completes their part, the whole group can achieve better results.',q:'What helps a group achieve better results?',opts:['One person doing everything','Ignoring different ideas','Everyone listening and doing their part','Finishing without a plan'],a:2},
+{title:'A Day Without the Internet',text:'Last Sunday, Minh decided to spend a day without the Internet. At first, he felt bored because he usually watched videos during his free time. Then he rode his bicycle, helped his mother cook lunch, and read a comic book. In the evening, he realized that he had enjoyed many activities that did not need a screen.',q:'How did Minh feel at the beginning?',opts:['Bored','Angry','Sleepy','Excited'],a:0},
+{title:'Why Sleep Matters',text:'Sleep gives the body and brain time to rest. Students who get enough sleep often find it easier to pay attention in class and remember what they have learned. A regular bedtime can help create a healthy routine. Instead of staying up late every night, students should make time for both study and rest.',q:'What is one benefit of enough sleep?',opts:['It removes the need to study','It can help students pay attention','It makes every subject easy','It replaces exercise'],a:1}
 ];
 let readingAnswered=false;
+function allReadingLessons(){return [...passages,...customReading]}
+function renderReadingSelect(selectedId){
+ const s=$('readingSelect');if(!s)return;
+ const all=allReadingLessons();
+ s.innerHTML=all.map((p,i)=>`<option value="${i}">${escapeHTML(p.title)}${i>=passages.length?' · Tự tạo':''}</option>`).join('');
+ const idx=selectedId?all.findIndex(p=>p.id===selectedId):0;s.value=String(idx>=0?idx:0);
+}
 function loadReading(){
- const p=passages[Number($('readingSelect').value)];
- $('readingText').innerHTML=p.text.split(/(\b[a-zA-Z']+\b)/).map(t=>/^[a-zA-Z']+$/.test(t)?`<span class="tapword" onclick="lookupReadingWord('${t.toLowerCase()}')">${escapeHTML(t)}</span>`:escapeHTML(t)).join('');
- $('readingQuestion').innerHTML=`<b>${p.q}</b><div class="choice-list">${p.opts.map((o,i)=>`<button class="choice" onclick="answerReading(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div>`;
+ const all=allReadingLessons();let index=Number($('readingSelect').value)||0;
+ if(!all[index])index=0;
+ const p=all[index];if(!p)return;
+ $('readingLength').textContent=p.text.trim().split(/\s+/).length+' WORDS';
+ $('readingText').innerHTML=p.text.split(/(\b[a-zA-Z']+\b)/).map(t=>/^[a-zA-Z']+$/.test(t)?`<span class="tapword" data-word="${escapeHTML(t.toLowerCase())}">${escapeHTML(t)}</span>`:escapeHTML(t)).join('');
+ $('readingText').querySelectorAll('.tapword').forEach(el=>el.addEventListener('click',()=>lookupReadingWord(el.dataset.word)));
+ $('readingQuestion').innerHTML=`<b>${escapeHTML(p.q)}</b><div class="choice-list">${p.opts.map((o,i)=>`<button class="choice" onclick="answerReading(${i})">${String.fromCharCode(65+i)}. ${escapeHTML(o)}</button>`).join('')}</div>`;
  $('readingFeedback').textContent='Chọn câu trả lời để kiểm tra.';readingAnswered=false;
 }
 function answerReading(i){
  if(readingAnswered)return;readingAnswered=true;
- const p=passages[Number($('readingSelect').value)];
+ const p=allReadingLessons()[Number($('readingSelect').value)||0];
  document.querySelectorAll('#readingQuestion .choice').forEach((b,j)=>{if(j===p.a)b.classList.add('correct');else if(j===i)b.classList.add('wrong');b.disabled=true});
  $('readingFeedback').textContent=i===p.a?'Chính xác! Mày đã nắm đúng ý chính.':'Chưa chính xác. Hãy đọc lại đoạn văn và tìm thông tin liên quan.';
 }
 function lookupReadingWord(word){
  const w=words.find(x=>x.word.toLowerCase()===word);
  $('readingLookup').textContent=w?`${word}: ${w.meaning}`:`“${word}” chưa có trong kho. Mày có thể tra từ ở mục Từ vựng.`;
+}
+function addReadingLesson(){
+ const title=$('newReadingTitle').value.trim(),text=$('newReadingText').value.trim(),q=$('newReadingQuestion').value.trim();
+ const opts=$('newReadingOptions').value.split(/\n/).map(x=>x.trim()).filter(Boolean),a=Number($('newReadingAnswer').value);
+ if(!title||!text||!q||opts.length!==4){$('readingAuthorStatus').textContent='Nhập tên bài, đoạn văn, câu hỏi và đủ 4 lựa chọn (mỗi lựa chọn một dòng).';return}
+ customReading.unshift({id:makeId(),title,text,q,opts,a});localStorage.setItem(STORAGE.reading,JSON.stringify(customReading));
+ renderReadingSelect(customReading[0].id);loadReading();
+ ['newReadingTitle','newReadingText','newReadingQuestion','newReadingOptions'].forEach(id=>$(id).value='');
+ $('readingAuthorStatus').textContent='Đã lưu bài Reading mới.';
+}
+function deleteReadingLesson(){
+ const p=allReadingLessons()[Number($('readingSelect').value)||0];
+ if(!p||!p.id){$('readingAuthorStatus').textContent='Chỉ có thể xóa bài do mày tự tạo.';return}
+ if(!confirm('Xóa bài Reading “'+p.title+'”?'))return;
+ customReading=customReading.filter(x=>x.id!==p.id);localStorage.setItem(STORAGE.reading,JSON.stringify(customReading));renderReadingSelect();loadReading();$('readingAuthorStatus').textContent='Đã xóa bài Reading tự tạo.';
+}
+
+const defaultSpeaking=[
+{id:'sp1',title:'Daily Routine',text:'I usually wake up at six thirty. I have breakfast and get ready for school. After school, I do my homework and review my lessons. In the evening, I sometimes read a book or listen to music.'},
+{id:'sp2',title:'My Favorite Hobby',text:'My favorite hobby is playing badminton. I often play with my friends at the weekend. This activity is exciting and helps me learn how to work with other people. I always feel refreshed after playing.'},
+{id:'sp3',title:'Learning English',text:'I am learning English because it is useful for communication and education. I try to learn new words every day. I also practice listening, speaking, reading, and writing. I know that progress takes time, so I will keep practicing.'},
+{id:'sp4',title:'A Memorable Day',text:'One of my most memorable days was a school trip with my classmates. We visited an interesting place, took photos, and shared our lunch. I enjoyed spending time with my friends. I hope we can have another trip soon.'},
+{id:'sp5',title:'Protecting the Environment',text:'Everyone can help protect the environment. We can save water, turn off lights when we leave a room, and use reusable bags. We should also put rubbish in the correct bins. Small actions can make our community cleaner.'},
+{id:'sp6',title:'My Favorite Subject',text:'My favorite subject is English. I enjoy learning new vocabulary and discovering how sentences are formed. Sometimes grammar is difficult, but I try to practice with examples. I want to become more confident when I speak English.'},
+{id:'sp7',title:'A Good Friend',text:'A good friend is kind, honest, and helpful. Friends listen to each other and respect different opinions. They can share happy moments and support one another when something is difficult. I think friendship makes school life more enjoyable.'},
+{id:'sp8',title:'Technology in Daily Life',text:'Technology is an important part of modern life. People use phones and computers to study, communicate, and find information. However, we should use technology wisely and take breaks from screens. A balanced routine is important.'}
+];
+function allSpeakingLessons(){return [...defaultSpeaking,...customSpeaking]}
+function renderSpeakingSelect(selectedId){
+ const s=$('speakLessonSelect');if(!s)return;
+ const all=allSpeakingLessons();s.innerHTML=all.map((p,i)=>`<option value="${i}">${escapeHTML(p.title)}${i>=defaultSpeaking.length?' · Tự tạo':''}</option>`).join('');
+ const idx=selectedId?all.findIndex(p=>p.id===selectedId):0;s.value=String(idx>=0?idx:0);selectSpeakingLesson();
+}
+function selectSpeakingLesson(){
+ const p=allSpeakingLessons()[Number($('speakLessonSelect').value)||0];if(p)$('speakPrompt').value=p.text;
+ recognizedText='';$('speechResult').textContent='Phần mày nói sẽ xuất hiện ở đây.';$('speechCompare').textContent='Câu nhận diện sẽ được đối chiếu với nội dung bài nói.';
+}
+function addSpeakingLesson(){
+ const title=$('newSpeakingTitle').value.trim(),text=$('newSpeakingText').value.trim();
+ if(!title||!text){$('speakingAuthorStatus').textContent='Hãy nhập tên và nội dung bài Speaking.';return}
+ customSpeaking.unshift({id:makeId(),title,text});localStorage.setItem(STORAGE.speaking,JSON.stringify(customSpeaking));
+ renderSpeakingSelect(customSpeaking[0].id);$('newSpeakingTitle').value='';$('newSpeakingText').value='';$('speakingAuthorStatus').textContent='Đã lưu bài Speaking mới.';
+}
+function deleteSpeakingLesson(){
+ const p=allSpeakingLessons()[Number($('speakLessonSelect').value)||0];
+ if(!p||!p.id||!customSpeaking.some(x=>x.id===p.id)){$('speakingAuthorStatus').textContent='Chỉ có thể xóa bài Speaking do mày tự tạo.';return}
+ if(!confirm('Xóa bài Speaking “'+p.title+'”?'))return;
+ customSpeaking=customSpeaking.filter(x=>x.id!==p.id);localStorage.setItem(STORAGE.speaking,JSON.stringify(customSpeaking));renderSpeakingSelect();$('speakingAuthorStatus').textContent='Đã xóa bài Speaking tự tạo.';
 }
 
 const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -725,7 +821,7 @@ function init(){
  const name=localStorage.getItem(STORAGE.name)||'English learner';
  $('displayName').value=name;$('sideName').textContent=name;
  applyAvatar(localStorage.getItem(STORAGE.avatar));applySavedBackground();
- updateStats();renderWords();renderHistory();refreshSelects();renderGrammar();loadReading();
+ updateStats();renderWords();renderHistory();refreshSelects();renderGrammar();renderSpeakingSelect();renderReadingSelect();loadReading();
 }
 init();
 </script>
