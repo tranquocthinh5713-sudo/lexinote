@@ -56,7 +56,7 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
 .flashcard:hover{transform:translateY(-3px)}.flashcard .face-label{font-size:10px;letter-spacing:2px;color:#78a5b5;font-weight:900}.flashcard .flash-word{font-size:clamp(28px,5vw,43px);font-weight:900;margin:13px 0;color:#285b70}.flashcard .flash-hint{font-size:13px;color:var(--muted);font-weight:700}.flash-controls{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin-top:15px}
 .choice-list{display:grid;gap:9px;margin:16px 0}.choice{border-radius:15px;padding:13px 15px;text-align:left;box-shadow:none;font-weight:800;color:#4b7181}.choice:hover{background:rgba(255,255,255,.82)}.choice.correct{border-color:#8acfb9;background:rgba(210,247,229,.6);color:#28795b}.choice.wrong{border-color:#e6a6ae;background:rgba(255,224,229,.6);color:#a64f5e}
 .progress{height:8px;background:rgba(109,169,188,.15);border-radius:99px;overflow:hidden;margin:12px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,#69b9d0,#9bd9d9);border-radius:99px;width:0;transition:width .2s}
-.lesson-card{padding:17px;border-radius:19px;box-shadow:none}.lesson-card h3{margin:7px 0}.lesson-card p{font-size:12px;color:var(--muted);font-weight:700;margin:0}
+.lesson-card{padding:17px;border-radius:19px;box-shadow:none}.lesson-card h3{margin:7px 0}.lesson-card p{font-size:12px;color:var(--muted);font-weight:700;margin:0;white-space:pre-wrap}
 .reading-passage{padding:22px;border-radius:20px;line-height:1.85;font-size:15px;font-weight:700;box-shadow:none;background:rgba(255,255,255,.55)}
 .reading-passage .tapword{cursor:pointer;border-bottom:1px dashed #63abc3;color:#287f9d}
 .avatar-frame{width:130px;height:130px;border-radius:38px;overflow:hidden;display:grid;place-items:center;font-size:55px;margin:0 auto 13px;background:rgba(255,255,255,.5)}.avatar-frame img{width:100%;height:100%;object-fit:cover}
@@ -104,8 +104,9 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
         <div class="lesson-card"><div style="font-size:25px">📝</div><h3>Kiểm tra từ vựng</h3><p>Thử thách trí nhớ với kho từ của mày.</p><button class="btn" style="margin-top:13px" onclick="showPage('test')">Làm bài</button></div>
       </div>
     </section>
+
     <section class="page" id="page-vocabulary">
-      <div class="section-head"><div><h2>Kho từ vựng</h2><p>Tra nghĩa, loại từ, cách dùng và lưu vào thư viện chung.</p></div><span class="pill" id="wordCountPill">0 WORDS</span></div>
+      <div class="section-head"><div><h2>Kho từ vựng</h2><p>Tra nghĩa, loại từ và lưu vào thư viện chung.</p></div><span class="pill" id="wordCountPill">0 WORDS</span></div>
       <div class="grid-2">
         <div class="panel">
           <h3>✦ Tra cứu từ thông minh</h3><p class="panel-sub">Nhập từ hoặc cụm từ tiếng Anh. LexiNote sẽ tìm nghĩa và loại từ từ các nguồn từ điển trực tuyến.</p>
@@ -120,7 +121,6 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
           <div class="form-row"><label>LOẠI TỪ</label><input id="newPos" class="field" placeholder="noun (n), verb (v), adjective (adj)..."></div>
           <div class="form-row"><label>NGHĨA TIẾNG VIỆT (có thể nhập nhiều nghĩa)</label><textarea id="newMeaning" class="field" placeholder="Mỗi nghĩa một dòng hoặc ngăn cách bằng dấu chấm phẩy"></textarea></div>
           <div class="form-row"><label>VÍ DỤ</label><textarea id="newExample" class="field" placeholder="Example sentence — nghĩa tiếng Việt"></textarea></div>
-          <div class="form-row"><label>CẤU TRÚC / CÁCH DÙNG</label><textarea id="newUsage" class="field" placeholder="Ví dụ: be interested in + N/V-ing"></textarea></div>
           <button class="btn primary" onclick="addWord()">Lưu vào kho từ vựng</button>
           <div id="addStatus" class="notice" aria-live="polite">Từ đã lưu sẽ xuất hiện trong Flashcard và Kiểm tra.</div>
         </div>
@@ -130,6 +130,7 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
         <input id="wordSearch" class="field" placeholder="Tìm trong kho từ..." oninput="renderWords()"><div id="wordList" class="word-list"></div>
       </div>
     </section>
+
     <section class="page" id="page-flashcards">
       <div class="section-head"><div><h2>Flashcard studio</h2><p>Nhìn từ, tự nhớ nghĩa rồi lật thẻ để kiểm tra.</p></div></div>
       <div class="panel">
@@ -139,6 +140,7 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
         <div class="flash-controls"><button class="btn" onclick="prevFlash()">← Trước</button><button class="btn primary" onclick="flipCard()">Lật thẻ</button><button class="btn" onclick="nextFlash()">Tiếp →</button><button class="btn" onclick="shuffleFlash()">⇄ Xáo trộn</button></div>
       </div>
     </section>
+
     <section class="page" id="page-listening">
       <div class="section-head"><div><h2>Listening room</h2><p>Nghe phát âm chuẩn từ trình đọc văn bản của thiết bị.</p></div></div>
       <div class="grid-2">
@@ -146,6 +148,7 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
         <div class="panel"><h3>🔊 Nghe câu của riêng mày</h3><p class="panel-sub">Nhập câu hoặc đoạn văn để nghe cách phát âm.</p><div class="form-row"><label>VĂN BẢN TIẾNG ANH</label><textarea id="listenText" class="field" placeholder="Type an English sentence here..."></textarea></div><div class="form-row"><label>GIỌNG ĐỌC</label><select id="voiceSelect" class="field"><option value="">Tự động chọn giọng English</option></select></div><div class="actions"><button class="btn primary" onclick="speakCustom()">▶ Phát</button><button class="btn" onclick="stopSpeech()">■ Dừng</button></div><div class="notice">Chất lượng và lựa chọn giọng đọc phụ thuộc trình duyệt / hệ điều hành.</div></div>
       </div>
     </section>
+
     <section class="page" id="page-test">
       <div class="section-head"><div><h2>Vocabulary challenge</h2><p>Bài kiểm tra lấy câu hỏi trực tiếp từ kho từ vựng đã lưu.</p></div></div>
       <div class="grid-2">
@@ -154,11 +157,49 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
       </div>
       <div class="panel" style="margin-top:16px"><h3>Lịch sử luyện tập</h3><div id="testHistory" class="word-list"></div></div>
     </section>
+
     <section class="page" id="page-grammar">
-      <div class="section-head"><div><h2>Grammar library</h2><p>Ngữ pháp nền tảng, công thức, cách dùng và ví dụ.</p></div></div>
+      <div class="section-head"><div><h2>Grammar library</h2><p>Ngữ pháp nền tảng và thư viện bài học cá nhân.</p></div></div>
+
+      <div class="panel" style="margin-bottom:18px">
+        <h3>＋ Tạo bài ngữ pháp mới</h3>
+        <p class="panel-sub">Tự nhập chủ điểm, cách dùng, công thức và ví dụ để xây dựng thư viện Grammar riêng.</p>
+
+        <div class="form-row">
+          <label>TÊN CHỦ ĐIỂM NGỮ PHÁP</label>
+          <input id="grammarName" class="field" placeholder="Ví dụ: Past Perfect">
+        </div>
+        <div class="form-row">
+          <label>CÁCH DÙNG</label>
+          <textarea id="grammarDescription" class="field" placeholder="Ngữ pháp này được sử dụng khi nào?"></textarea>
+        </div>
+        <div class="form-row">
+          <label>CÔNG THỨC</label>
+          <textarea id="grammarFormula" class="field" placeholder="Ví dụ: S + had + V3/ed"></textarea>
+        </div>
+        <div class="form-row">
+          <label>VÍ DỤ</label>
+          <textarea id="grammarExample" class="field" placeholder="Ví dụ: I had finished my homework before dinner."></textarea>
+        </div>
+        <div class="actions">
+          <button class="btn primary" onclick="saveCustomGrammar()">＋ Lưu bài ngữ pháp</button>
+          <button class="btn" onclick="clearGrammarForm()">Xóa biểu mẫu</button>
+        </div>
+        <div class="notice" id="grammarStatus">Bài học của mày sẽ được lưu trên thiết bị.</div>
+      </div>
+
+      <div class="section-head">
+        <div><h2>Ngữ pháp của tao</h2><p>Các bài học do mày tự tạo và quản lý.</p></div>
+        <span class="pill" id="customGrammarCount">0 LESSONS</span>
+      </div>
+      <div class="grid-2" id="customGrammarGrid"></div>
+
+      <div class="section-head" style="margin-top:25px">
+        <div><h2>Grammar cơ bản</h2><p>Mười chủ điểm ngữ pháp được tích hợp sẵn.</p></div>
+      </div>
       <div class="grid-2" id="grammarGrid"></div>
-      <div class="panel" style="margin-top:16px"><h3>✦ Cách dùng ngữ pháp trong từ vựng</h3><p class="panel-sub">Khi tra từ, nếu nguồn có dữ liệu ví dụ hoặc cấu trúc, phần này sẽ được lưu cùng từ. Mày cũng có thể tự bổ sung cấu trúc ở ô “Cấu trúc / cách dùng”.</p><div class="notice">Ví dụ: interested → be interested in + danh từ / V-ing. Good at → be good at + danh từ / V-ing.</div></div>
     </section>
+
     <section class="page" id="page-speaking">
       <div class="section-head"><div><h2>Speaking practice</h2><p>Luyện đọc thành tiếng và kiểm tra nội dung bằng nhận diện giọng nói nếu trình duyệt hỗ trợ.</p></div></div>
       <div class="grid-2">
@@ -166,6 +207,7 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
         <div class="panel"><h3>Kết quả nhận diện</h3><div id="speechResult" class="reading-passage" style="min-height:130px">Phần mày nói sẽ xuất hiện ở đây.</div><div class="actions"><button class="btn" onclick="compareSpeech()">Đối chiếu câu mẫu</button></div><div id="speechCompare" class="notice">Nhận diện giọng nói chỉ chuyển lời nói thành văn bản, không phải chấm phát âm chuyên nghiệp.</div></div>
       </div>
     </section>
+
     <section class="page" id="page-reading">
       <div class="section-head"><div><h2>Reading corner</h2><p>Đọc đoạn văn, tra nhanh từ được chọn và trả lời câu hỏi.</p></div></div>
       <div class="grid-2">
@@ -173,6 +215,7 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
         <div class="panel"><h3>Comprehension check</h3><p class="panel-sub">Chọn đáp án đúng dựa trên bài đọc.</p><div id="readingQuestion"></div><div id="readingFeedback" class="notice">Chọn câu trả lời để kiểm tra.</div><button class="btn" style="margin-top:12px" onclick="loadReading()">Làm lại bài</button></div>
       </div>
     </section>
+
     <section class="page" id="page-appearance">
       <div class="section-head"><div><h2>Personalize your space</h2><p>Thay đổi hình nền và avatar. Tùy chỉnh được lưu trên trình duyệt này.</p></div></div>
       <div class="grid-2">
@@ -183,75 +226,486 @@ textarea.field{resize:vertical;min-height:88px}select.field{cursor:pointer}
   </div>
 </main>
 </div>
+
 <script>
-const STORAGE={words:'lexinote_words_v3',bg:'lexinote_bg_v3',avatar:'lexinote_avatar_v3',name:'lexinote_name_v3',history:'lexinote_history_v3'};
+const STORAGE={words:'lexinote_words_v3',bg:'lexinote_bg_v3',avatar:'lexinote_avatar_v3',name:'lexinote_name_v3',history:'lexinote_history_v3',grammar:'lexinote_custom_grammar_v1'};
 const $=id=>document.getElementById(id);
 let words=loadJSON(STORAGE.words,[]),testHistory=loadJSON(STORAGE.history,[]);
-let lookupCache=null,flashIndex=0,flashOrder=[],flashBack=false,testItems=[],testIndex=0,testScore=0,testAnswered=false,recognition=null,recognizedText='';
+let customGrammar=loadJSON(STORAGE.grammar,[]);
+let lookupCache=null,flashIndex=0,flashOrder=[],flashBack=false,testItems=[],testIndex=0,testScore=0,testAnswered=false,recognition=null,recognizedText='',editingGrammarId=null;
+
 function loadJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
 function saveWords(){localStorage.setItem(STORAGE.words,JSON.stringify(words));updateStats();renderWords();refreshSelects()}
 function escapeHTML(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function showPage(page){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+page));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));const labels={home:'Tổng quan',vocabulary:'Từ vựng',flashcards:'Flashcard',listening:'Listening',test:'Kiểm tra',grammar:'Grammar',speaking:'Speaking',reading:'Reading',appearance:'Giao diện'};$('breadcrumb').textContent='Không gian học tập / '+labels[page];if(page==='flashcards')resetFlash();if(page==='listening')refreshSelects();if(page==='grammar')renderGrammar()}
+
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+page));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+  const labels={home:'Tổng quan',vocabulary:'Từ vựng',flashcards:'Flashcard',listening:'Listening',test:'Kiểm tra',grammar:'Grammar',speaking:'Speaking',reading:'Reading',appearance:'Giao diện'};
+  $('breadcrumb').textContent='Không gian học tập / '+labels[page];
+  if(page==='flashcards')resetFlash();
+  if(page==='listening')refreshSelects();
+  if(page==='grammar')renderGrammar();
+}
 document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
-function updateStats(){$('statWords').textContent=words.length;$('statCards').textContent=words.length;$('statTests').textContent=testHistory.length;$('statBest').textContent=testHistory.length?Math.max(...testHistory.map(x=>x.score))+'%':'—';$('wordCountPill').textContent=words.length+' WORDS'}
-function renderWords(){const q=($('wordSearch')?.value||'').toLowerCase();const list=words.filter(w=>(w.word+' '+w.meaning+' '+w.pos).toLowerCase().includes(q));$('wordList').innerHTML=list.length?list.map(w=>`<div class="word-card"><div><strong>${escapeHTML(w.word)}</strong> <span class="pill">${escapeHTML(w.pos||'chưa rõ loại từ')}</span><p>${escapeHTML(w.meaning).replace(/\n/g,' · ')}</p>${w.usage?`<p>↳ ${escapeHTML(w.usage)}</p>`:''}</div><div class="word-actions"><button class="mini-btn" onclick="speakText('${escapeHTML(w.word).replace(/'/g,"&#39;")}')">▶</button><button class="mini-btn" onclick="editWord('${w.id}')">Sửa</button><button class="mini-btn" onclick="deleteWord('${w.id}')">×</button></div></div>`).join(''):'<div class="empty">Chưa có từ phù hợp. Hãy tra và lưu từ đầu tiên nhé.</div>'}
-function addWord(){const word=$('newWord').value.trim(),pos=$('newPos').value.trim(),meaning=$('newMeaning').value.trim();if(!word||!meaning){$('addStatus').textContent='Cần nhập từ tiếng Anh và ít nhất một nghĩa.';return}const existing=words.find(w=>w.word.toLowerCase()===word.toLowerCase());const data={id:existing?.id||crypto.randomUUID(),word,pos,meaning,example:$('newExample').value.trim(),usage:$('newUsage').value.trim()};if(existing)Object.assign(existing,data);else words.unshift(data);saveWords();$('addStatus').textContent='Đã lưu “'+word+'” vào kho từ vựng.';['newWord','newPos','newMeaning','newExample','newUsage'].forEach(id=>$(id).value='')}
-function deleteWord(id){if(!confirm('Xóa từ này khỏi kho từ vựng?'))return;words=words.filter(w=>w.id!==id);saveWords()}
-function editWord(id){const w=words.find(x=>x.id===id);if(!w)return;$('newWord').value=w.word;$('newPos').value=w.pos;$('newMeaning').value=w.meaning;$('newExample').value=w.example||'';$('newUsage').value=w.usage||'';$('addStatus').textContent='Đã đưa từ vào biểu mẫu. Bấm Lưu để cập nhật.';showPage('vocabulary');$('newWord').focus()}
-function exportWords(){const blob=new Blob([JSON.stringify(words,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='lexinote-vocabulary.json';a.click();URL.revokeObjectURL(a.href)}
-function importWords(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);if(!Array.isArray(data))throw Error();data.forEach(w=>{if(w.word&&w.meaning){const old=words.find(x=>x.word.toLowerCase()===w.word.toLowerCase());if(old)Object.assign(old,w);else words.push({...w,id:w.id||crypto.randomUUID()})}});saveWords();alert('Đã nhập dữ liệu từ vựng.')}catch{alert('File JSON không hợp lệ.')}e.target.value=''};r.readAsText(f)}
+
+function updateStats(){
+  $('statWords').textContent=words.length;
+  $('statCards').textContent=words.length;
+  $('statTests').textContent=testHistory.length;
+  $('statBest').textContent=testHistory.length?Math.max(...testHistory.map(x=>x.score))+'%':'—';
+  $('wordCountPill').textContent=words.length+' WORDS';
+}
+
+function renderWords(){
+  const q=($('wordSearch')?.value||'').toLowerCase();
+  const list=words.filter(w=>(w.word+' '+w.meaning+' '+w.pos).toLowerCase().includes(q));
+  $('wordList').innerHTML=list.length?list.map(w=>`
+    <div class="word-card">
+      <div>
+        <strong>${escapeHTML(w.word)}</strong>
+        <span class="pill">${escapeHTML(w.pos||'chưa rõ loại từ')}</span>
+        <p>${escapeHTML(w.meaning).replace(/\n/g,' · ')}</p>
+      </div>
+      <div class="word-actions">
+        <button class="mini-btn" onclick="speakText('${escapeHTML(w.word).replace(/'/g,"&#39;")}')">▶</button>
+        <button class="mini-btn" onclick="editWord('${w.id}')">Sửa</button>
+        <button class="mini-btn" onclick="deleteWord('${w.id}')">×</button>
+      </div>
+    </div>`).join(''):'<div class="empty">Chưa có từ phù hợp. Hãy tra và lưu từ đầu tiên nhé.</div>';
+}
+
+function addWord(){
+  const word=$('newWord').value.trim(),pos=$('newPos').value.trim(),meaning=$('newMeaning').value.trim();
+  if(!word||!meaning){$('addStatus').textContent='Cần nhập từ tiếng Anh và ít nhất một nghĩa.';return}
+  const existing=words.find(w=>w.word.toLowerCase()===word.toLowerCase());
+  const data={id:existing?.id||crypto.randomUUID(),word,pos,meaning,example:$('newExample').value.trim()};
+  if(existing)Object.assign(existing,data);else words.unshift(data);
+  saveWords();
+  $('addStatus').textContent='Đã lưu “'+word+'” vào kho từ vựng.';
+  ['newWord','newPos','newMeaning','newExample'].forEach(id=>$(id).value='');
+}
+
+function deleteWord(id){
+  if(!confirm('Xóa từ này khỏi kho từ vựng?'))return;
+  words=words.filter(w=>w.id!==id);saveWords();
+}
+
+function editWord(id){
+  const w=words.find(x=>x.id===id);if(!w)return;
+  $('newWord').value=w.word;$('newPos').value=w.pos||'';
+  $('newMeaning').value=w.meaning;$('newExample').value=w.example||'';
+  $('addStatus').textContent='Đã đưa từ vào biểu mẫu. Bấm Lưu để cập nhật.';
+  showPage('vocabulary');$('newWord').focus();
+}
+
+function exportWords(){
+  const blob=new Blob([JSON.stringify(words,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='lexinote-vocabulary.json';a.click();URL.revokeObjectURL(a.href);
+}
+
+function importWords(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const data=JSON.parse(r.result);if(!Array.isArray(data))throw Error();
+      data.forEach(w=>{
+        if(w.word&&w.meaning){
+          const old=words.find(x=>x.word.toLowerCase()===w.word.toLowerCase());
+          if(old)Object.assign(old,w);else words.push({...w,id:w.id||crypto.randomUUID()});
+        }
+      });
+      saveWords();alert('Đã nhập dữ liệu từ vựng.');
+    }catch{alert('File JSON không hợp lệ.')}
+    e.target.value='';
+  };
+  r.readAsText(f);
+}
+
 function decodeEntities(s){const t=document.createElement('textarea');t.innerHTML=s;return t.value}
 function cleanText(s){return decodeEntities(String(s||'').replace(/<[^>]*>/g,'')).replace(/\s+/g,' ').trim()}
-async function fetchJSON(url,timeout=10000){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeout);try{const r=await fetch(url,{signal:controller.signal});if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(timer)}}
-async function lookupWord(){const word=$('lookupWord').value.trim();if(!word){$('lookupStatus').textContent='Nhập một từ tiếng Anh trước nhé.';return}const btn=$('lookupBtn');btn.disabled=true;btn.textContent='Đang tra cứu…';$('lookupStatus').textContent='Đang tìm nghĩa và loại từ từ từ điển trực tuyến…';$('lookupResult').innerHTML='';lookupCache=null;let entries=[],translation='';try{entries=await fetchJSON('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(word))}catch(e){}try{const data=await fetchJSON('https://api.mymemory.translated.net/get?q='+encodeURIComponent(word)+'&langpair=en|vi');translation=cleanText(data?.responseData?.translatedText||'');if(translation.toLowerCase()===word.toLowerCase()||/MYMEMORY WARNING|PLEASE SELECT/i.test(translation))translation=''}catch(e){}if(!translation){try{const g=await fetchJSON('https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q='+encodeURIComponent(word));translation=cleanText((g?.[0]||[]).map(x=>x[0]||'').join(''))}catch(e){}}
-const posMap={noun:'Danh từ (n)',verb:'Động từ (v)',adjective:'Tính từ (adj)',adverb:'Trạng từ (adv)',pronoun:'Đại từ (pron)',preposition:'Giới từ (prep)',conjunction:'Liên từ (conj)',interjection:'Thán từ (interj)',determiner:'Từ hạn định'};let meanings=[],posSet=new Set(),synonyms=new Set();(Array.isArray(entries)?entries:[]).forEach(entry=>(entry.meanings||[]).forEach(m=>{const pos=posMap[m.partOfSpeech]||m.partOfSpeech;posSet.add(pos);(m.definitions||[]).forEach(d=>{if(d.definition)meanings.push({pos,definition:d.definition,example:d.example||''});(d.synonyms||[]).forEach(s=>synonyms.add(s))})}));const unique=[],seen=new Set();meanings.forEach(m=>{const k=m.pos+'|'+m.definition;if(!seen.has(k)){seen.add(k);unique.push(m)}});const found=unique.length>0||!!translation;
-if(unique.length){const pos=[...posSet].join(', '),vi=translation||'Chưa tìm được bản dịch tiếng Việt tự động.';lookupCache={word,pos,meaning:vi,definitions:unique,example:unique.find(x=>x.example)?.example||'',usage:''};$('lookupResult').innerHTML=`<div class="divider"></div><h3>${escapeHTML(word)} <span class="pill">${escapeHTML(pos||'')}</span></h3><p><b>Nghĩa tiếng Việt tham khảo:</b> ${escapeHTML(vi)}</p><h4 style="margin:15px 0 7px">Các nghĩa trong từ điển Anh–Anh</h4>${unique.slice(0,18).map((m,i)=>`<div class="notice"><b>${i+1}. ${escapeHTML(m.pos)}</b><br>${escapeHTML(m.definition)}${m.example?`<br><i>Example: ${escapeHTML(m.example)}</i>`:''}</div>`).join('')}${synonyms.size?`<p class="small muted" style="margin-top:10px">Từ liên quan: ${escapeHTML([...synonyms].slice(0,12).join(', '))}</p>`:''}<div class="actions"><button class="btn primary" onclick="saveLookup()">＋ Lưu kết quả vào kho</button></div>`}else if(translation){lookupCache={word,pos:'Chưa xác định',meaning:translation,definitions:[],example:'',usage:''};$('lookupResult').innerHTML=`<div class="divider"></div><h3>${escapeHTML(word)}</h3><p><b>Nghĩa tiếng Việt:</b> ${escapeHTML(translation)}</p><div class="actions"><button class="btn primary" onclick="saveLookup()">＋ Lưu từ này</button></div>`}
-$('lookupStatus').textContent=found?'Đã tra cứu xong. Dữ liệu nghĩa và loại từ phụ thuộc nguồn từ điển.':'Không tìm thấy dữ liệu hoặc dịch vụ đang không phản hồi. Kiểm tra Internet hoặc nhập thủ công.';if(!found)$('lookupResult').innerHTML='<div class="empty">Không có kết quả đáng tin cậy cho từ này. Không tự tạo nghĩa để tránh học sai.</div>';btn.disabled=false;btn.textContent='✨ Tự nhận diện nghĩa'}
-function saveLookup(){if(!lookupCache)return;const w=lookupCache,meaning=[w.meaning,...w.definitions.map(d=>`[${d.pos}] ${d.definition}`)].filter(Boolean).join('\n');$('newWord').value=w.word;$('newPos').value=w.pos;$('newMeaning').value=meaning;$('newExample').value=w.example;$('newUsage').value=w.usage;addWord()}
+
+async function fetchJSON(url,timeout=10000){
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeout);
+  try{const r=await fetch(url,{signal:controller.signal});if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}
+  finally{clearTimeout(timer)}
+}
+
+async function lookupWord(){
+  const word=$('lookupWord').value.trim();
+  if(!word){$('lookupStatus').textContent='Nhập một từ tiếng Anh trước nhé.';return}
+  const btn=$('lookupBtn');btn.disabled=true;btn.textContent='Đang tra cứu…';
+  $('lookupStatus').textContent='Đang tìm nghĩa và loại từ từ điển trực tuyến…';
+  $('lookupResult').innerHTML='';lookupCache=null;
+  let entries=[],translation='';
+  try{entries=await fetchJSON('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(word))}catch(e){}
+  try{
+    const data=await fetchJSON('https://api.mymemory.translated.net/get?q='+encodeURIComponent(word)+'&langpair=en|vi');
+    translation=cleanText(data?.responseData?.translatedText||'');
+    if(translation.toLowerCase()===word.toLowerCase()||/MYMEMORY WARNING|PLEASE SELECT/i.test(translation))translation='';
+  }catch(e){}
+  if(!translation){
+    try{
+      const g=await fetchJSON('https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q='+encodeURIComponent(word));
+      translation=cleanText((g?.[0]||[]).map(x=>x[0]||'').join(''));
+    }catch(e){}
+  }
+
+  const posMap={noun:'Danh từ (n)',verb:'Động từ (v)',adjective:'Tính từ (adj)',adverb:'Trạng từ (adv)',pronoun:'Đại từ (pron)',preposition:'Giới từ (prep)',conjunction:'Liên từ (conj)',interjection:'Thán từ (interj)',determiner:'Từ hạn định'};
+  let meanings=[],posSet=new Set(),synonyms=new Set();
+  (Array.isArray(entries)?entries:[]).forEach(entry=>(entry.meanings||[]).forEach(m=>{
+    const pos=posMap[m.partOfSpeech]||m.partOfSpeech;posSet.add(pos);
+    (m.definitions||[]).forEach(d=>{
+      if(d.definition)meanings.push({pos,definition:d.definition,example:d.example||''});
+      (d.synonyms||[]).forEach(s=>synonyms.add(s));
+    });
+  }));
+  const unique=[],seen=new Set();
+  meanings.forEach(m=>{const k=m.pos+'|'+m.definition;if(!seen.has(k)){seen.add(k);unique.push(m)}});
+  const found=unique.length>0||!!translation;
+
+  if(unique.length){
+    const pos=[...posSet].join(', '),vi=translation||'Chưa tìm được bản dịch tiếng Việt tự động.';
+    lookupCache={word,pos,meaning:vi,definitions:unique,example:unique.find(x=>x.example)?.example||''};
+    $('lookupResult').innerHTML=`
+      <div class="divider"></div><h3>${escapeHTML(word)} <span class="pill">${escapeHTML(pos||'')}</span></h3>
+      <p><b>Nghĩa tiếng Việt tham khảo:</b> ${escapeHTML(vi)}</p>
+      <h4 style="margin:15px 0 7px">Các nghĩa trong từ điển Anh–Anh</h4>
+      ${unique.slice(0,18).map((m,i)=>`<div class="notice"><b>${i+1}. ${escapeHTML(m.pos)}</b><br>${escapeHTML(m.definition)}${m.example?`<br><i>Example: ${escapeHTML(m.example)}</i>`:''}</div>`).join('')}
+      ${synonyms.size?`<p class="small muted" style="margin-top:10px">Từ liên quan: ${escapeHTML([...synonyms].slice(0,12).join(', '))}</p>`:''}
+      <div class="actions"><button class="btn primary" onclick="saveLookup()">＋ Lưu kết quả vào kho</button></div>`;
+  }else if(translation){
+    lookupCache={word,pos:'Chưa xác định',meaning:translation,definitions:[],example:''};
+    $('lookupResult').innerHTML=`<div class="divider"></div><h3>${escapeHTML(word)}</h3><p><b>Nghĩa tiếng Việt:</b> ${escapeHTML(translation)}</p><div class="actions"><button class="btn primary" onclick="saveLookup()">＋ Lưu từ này</button></div>`;
+  }
+
+  $('lookupStatus').textContent=found?'Đã tra cứu xong. Dữ liệu nghĩa và loại từ phụ thuộc nguồn từ điển.':'Không tìm thấy dữ liệu hoặc dịch vụ đang không phản hồi. Kiểm tra Internet hoặc nhập thủ công.';
+  if(!found)$('lookupResult').innerHTML='<div class="empty">Không có kết quả đáng tin cậy cho từ này. Không tự tạo nghĩa để tránh học sai.</div>';
+  btn.disabled=false;btn.textContent='✨ Tự nhận diện nghĩa';
+}
+
+function saveLookup(){
+  if(!lookupCache)return;
+  const w=lookupCache;
+  const meaning=[w.meaning,...w.definitions.map(d=>`[${d.pos}] ${d.definition}`)].filter(Boolean).join('\n');
+  $('newWord').value=w.word;$('newPos').value=w.pos;
+  $('newMeaning').value=meaning;$('newExample').value=w.example;
+  addWord();
+}
 function clearLookup(){$('lookupWord').value='';$('lookupResult').innerHTML='';$('lookupStatus').textContent='Nhập từ để bắt đầu tra cứu.';lookupCache=null}
-function resetFlash(){flashOrder=words.map((_,i)=>i);flashIndex=0;flashBack=false;renderFlash()}
-function renderFlash(){const w=words[flashOrder[flashIndex]];if(!w){$('flashFace').textContent='LEXINOTE';$('flashWord').textContent='Chưa có từ vựng';$('flashHint').textContent='Thêm từ trong mục Từ vựng để bắt đầu';$('flashProgress').textContent='0 / 0';$('flashBar').style.width='0';return}const vi=$('flashDirection').value==='en';$('flashFace').textContent=flashBack?(vi?'VIETNAMESE':'ENGLISH'):(vi?'ENGLISH':'VIETNAMESE');$('flashWord').textContent=flashBack?(vi?w.meaning:w.word):(vi?w.word:w.meaning);$('flashHint').textContent=flashBack?(w.pos||''):'Bấm vào thẻ hoặc nút Lật thẻ để xem đáp án';$('flashProgress').textContent=(flashIndex+1)+' / '+flashOrder.length;$('flashBar').style.width=((flashIndex+1)/flashOrder.length*100)+'%'}
+
+function resetFlash(){
+  flashOrder=words.map((_,i)=>i);flashIndex=0;flashBack=false;renderFlash();
+}
+function renderFlash(){
+  const w=words[flashOrder[flashIndex]];
+  if(!w){
+    $('flashFace').textContent='LEXINOTE';$('flashWord').textContent='Chưa có từ vựng';
+    $('flashHint').textContent='Thêm từ trong mục Từ vựng để bắt đầu';
+    $('flashProgress').textContent='0 / 0';$('flashBar').style.width='0';return;
+  }
+  const vi=$('flashDirection').value==='en';
+  $('flashFace').textContent=flashBack?(vi?'VIETNAMESE':'ENGLISH'):(vi?'ENGLISH':'VIETNAMESE');
+  $('flashWord').textContent=flashBack?(vi?w.meaning:w.word):(vi?w.word:w.meaning);
+  $('flashHint').textContent=flashBack?(w.pos||''):'Bấm vào thẻ hoặc nút Lật thẻ để xem đáp án';
+  $('flashProgress').textContent=(flashIndex+1)+' / '+flashOrder.length;
+  $('flashBar').style.width=((flashIndex+1)/flashOrder.length*100)+'%';
+}
 function flipCard(){if(!words.length)return;flashBack=!flashBack;renderFlash()}
 function nextFlash(){if(!flashOrder.length)return;flashIndex=(flashIndex+1)%flashOrder.length;flashBack=false;renderFlash()}
 function prevFlash(){if(!flashOrder.length)return;flashIndex=(flashIndex-1+flashOrder.length)%flashOrder.length;flashBack=false;renderFlash()}
 function shuffleFlash(){flashOrder.sort(()=>Math.random()-.5);flashIndex=0;flashBack=false;renderFlash()}
-function refreshSelects(){const s=$('listenSelect');if(!s)return;s.innerHTML=words.length?words.map((w,i)=>`<option value="${i}">${escapeHTML(w.word)}</option>`).join(''):'<option value="">Chưa có từ</option>';loadListenWord();resetFlash()}
-function loadListenWord(){const w=words[Number($('listenSelect').value)];$('listenWord').textContent=w?.word||'—';$('listenMeaning').textContent=w?.meaning||'Chưa có từ được chọn'}
-function getVoices(){const voices=speechSynthesis?.getVoices?.()||[],en=voices.filter(v=>/^en(-|_)/i.test(v.lang));$('voiceSelect').innerHTML='<option value="">Tự động chọn giọng English</option>'+en.map(v=>`<option value="${escapeHTML(v.name)}">${escapeHTML(v.name)} (${escapeHTML(v.lang)})</option>`).join('')}
-function speakText(text,rate=1){if(!('speechSynthesis'in window)){alert('Trình duyệt này chưa hỗ trợ đọc văn bản.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=rate;const voice=$('voiceSelect')?.value;if(voice){const v=speechSynthesis.getVoices().find(x=>x.name===voice);if(v)u.voice=v}speechSynthesis.speak(u)}
+
+function refreshSelects(){
+  const s=$('listenSelect');if(!s)return;
+  s.innerHTML=words.length?words.map((w,i)=>`<option value="${i}">${escapeHTML(w.word)}</option>`).join(''):'<option value="">Chưa có từ</option>';
+  loadListenWord();resetFlash();
+}
+function loadListenWord(){
+  const w=words[Number($('listenSelect').value)];
+  $('listenWord').textContent=w?.word||'—';
+  $('listenMeaning').textContent=w?.meaning||'Chưa có từ được chọn';
+}
+function getVoices(){
+  const voices=speechSynthesis?.getVoices?.()||[],en=voices.filter(v=>/^en(-|_)/i.test(v.lang));
+  $('voiceSelect').innerHTML='<option value="">Tự động chọn giọng English</option>'+en.map(v=>`<option value="${escapeHTML(v.name)}">${escapeHTML(v.name)} (${escapeHTML(v.lang)})</option>`).join('');
+}
+function speakText(text,rate=1){
+  if(!('speechSynthesis'in window)){alert('Trình duyệt này chưa hỗ trợ đọc văn bản.');return}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=rate;
+  const voice=$('voiceSelect')?.value;
+  if(voice){const v=speechSynthesis.getVoices().find(x=>x.name===voice);if(v)u.voice=v}
+  speechSynthesis.speak(u);
+}
 function speakSelected(){const w=words[Number($('listenSelect').value)];if(w)speakText(w.word);else $('listenStatus').textContent='Hãy thêm từ vào kho trước.'}
 function speakSelectedSlow(){const w=words[Number($('listenSelect').value)];if(w)speakText(w.word,.72)}
 function speakCustom(){const t=$('listenText').value.trim();if(t)speakText(t);else $('listenStatus').textContent='Nhập câu tiếng Anh trước.'}
 function stopSpeech(){if('speechSynthesis'in window)speechSynthesis.cancel()}
 if('speechSynthesis'in window){getVoices();speechSynthesis.onvoiceschanged=getVoices}
-function startTest(){if(words.length<2){$('testSetupStatus').textContent='Cần ít nhất 2 từ đã lưu để tạo bài kiểm tra.';return}const count=Math.min(Number($('testCount').value),words.length);testItems=[...words].sort(()=>Math.random()-.5).slice(0,count);testIndex=0;testScore=0;testAnswered=false;$('testIntro').hidden=true;$('testResult').hidden=true;$('testQuestion').hidden=false;renderQuestion()}
-function renderQuestion(){const w=testItems[testIndex],en=$('testDirection').value==='en',correct=en?w.meaning:w.word,pool=words.filter(x=>x.id!==w.id).sort(()=>Math.random()-.5).slice(0,3).map(x=>en?x.meaning:x.word),options=[correct,...pool].sort(()=>Math.random()-.5);$('questionCounter').textContent=`Câu ${testIndex+1} / ${testItems.length}`;$('questionScore').textContent='Đúng: '+testScore;$('testBar').style.width=(testIndex/testItems.length*100)+'%';$('questionText').textContent=en?w.word:w.meaning;$('choiceList').innerHTML=options.map((o,i)=>`<button class="choice" onclick="answerQuestion(this,${JSON.stringify(o).replace(/</g,'\\u003c')})">${String.fromCharCode(65+i)}. ${escapeHTML(o)}</button>`).join('');$('answerFeedback').textContent='Chọn một đáp án.';$('nextQuestionBtn').hidden=true;testAnswered=false}
-function answerQuestion(btn,value){if(testAnswered)return;testAnswered=true;const w=testItems[testIndex],correct=$('testDirection').value==='en'?w.meaning:w.word;document.querySelectorAll('#choiceList .choice').forEach(b=>{const raw=b.textContent.replace(/^[A-D]\.\s*/,'');if(raw===correct)b.classList.add('correct');else if(b===btn)b.classList.add('wrong');b.disabled=true});if(value===correct){testScore++;$('answerFeedback').textContent='Chính xác! +1 điểm.'}else $('answerFeedback').textContent='Chưa đúng. Đáp án: '+correct;$('questionScore').textContent='Đúng: '+testScore;$('nextQuestionBtn').hidden=false;$('nextQuestionBtn').textContent=testIndex===testItems.length-1?'Xem kết quả':'Câu tiếp theo →'}
+
+function startTest(){
+  if(words.length<2){$('testSetupStatus').textContent='Cần ít nhất 2 từ đã lưu để tạo bài kiểm tra.';return}
+  const count=Math.min(Number($('testCount').value),words.length);
+  testItems=[...words].sort(()=>Math.random()-.5).slice(0,count);
+  testIndex=0;testScore=0;testAnswered=false;
+  $('testIntro').hidden=true;$('testResult').hidden=true;$('testQuestion').hidden=false;
+  renderQuestion();
+}
+function renderQuestion(){
+  const w=testItems[testIndex],en=$('testDirection').value==='en';
+  const correct=en?w.meaning:w.word;
+  const pool=words.filter(x=>x.id!==w.id).sort(()=>Math.random()-.5).slice(0,3).map(x=>en?x.meaning:x.word);
+  const options=[correct,...pool].sort(()=>Math.random()-.5);
+  $('questionCounter').textContent=`Câu ${testIndex+1} / ${testItems.length}`;
+  $('questionScore').textContent='Đúng: '+testScore;
+  $('testBar').style.width=(testIndex/testItems.length*100)+'%';
+  $('questionText').textContent=en?w.word:w.meaning;
+  $('choiceList').innerHTML=options.map((o,i)=>`<button class="choice" onclick="answerQuestion(this,${JSON.stringify(o).replace(/</g,'\\u003c')})">${String.fromCharCode(65+i)}. ${escapeHTML(o)}</button>`).join('');
+  $('answerFeedback').textContent='Chọn một đáp án.';
+  $('nextQuestionBtn').hidden=true;testAnswered=false;
+}
+function answerQuestion(btn,value){
+  if(testAnswered)return;testAnswered=true;
+  const w=testItems[testIndex],correct=$('testDirection').value==='en'?w.meaning:w.word;
+  document.querySelectorAll('#choiceList .choice').forEach(b=>{
+    const raw=b.textContent.replace(/^[A-D]\.\s*/,'');
+    if(raw===correct)b.classList.add('correct');else if(b===btn)b.classList.add('wrong');
+    b.disabled=true;
+  });
+  if(value===correct){testScore++;$('answerFeedback').textContent='Chính xác! +1 điểm.'}
+  else $('answerFeedback').textContent='Chưa đúng. Đáp án: '+correct;
+  $('questionScore').textContent='Đúng: '+testScore;
+  $('nextQuestionBtn').hidden=false;
+  $('nextQuestionBtn').textContent=testIndex===testItems.length-1?'Xem kết quả':'Câu tiếp theo →';
+}
 function nextQuestion(){if(!testAnswered)return;testIndex++;if(testIndex<testItems.length)renderQuestion();else finishTest()}
-function finishTest(){const score=Math.round(testScore/testItems.length*100);testHistory.unshift({date:new Date().toLocaleDateString('vi-VN'),score,correct:testScore,total:testItems.length});testHistory=testHistory.slice(0,20);localStorage.setItem(STORAGE.history,JSON.stringify(testHistory));updateStats();renderHistory();$('testQuestion').hidden=true;$('testResult').hidden=false;$('testResult').innerHTML=`<div style="text-align:center;padding:22px"><div class="eyebrow">COMPLETED</div><div class="result-big">${score}%</div><h2>${testScore}/${testItems.length} câu đúng</h2><p class="muted">Hoàn thành một lượt luyện tập. Tiếp tục ôn những từ còn nhầm nhé.</p><button class="btn primary" onclick="startTest()">Làm bài mới</button></div>`;$('testBar').style.width='100%'}
-function renderHistory(){$('testHistory').innerHTML=testHistory.length?testHistory.map(h=>`<div class="word-card"><div><strong>${h.score}%</strong><p>${h.date} · ${h.correct}/${h.total} câu đúng</p></div></div>`).join(''):'<div class="empty">Chưa có lịch sử kiểm tra.</div>'}
-const grammar=[['Present Simple','Thói quen, sự thật hiển nhiên.','S + V(s/es)','She studies English every day.'],['Present Continuous','Hành động đang diễn ra tại thời điểm nói.','S + am/is/are + V-ing','I am reading a book now.'],['Past Simple','Hành động đã xảy ra và kết thúc trong quá khứ.','S + V2/ed','We visited Da Nang last summer.'],['Present Perfect','Trải nghiệm hoặc hành động có liên hệ hiện tại.','S + have/has + V3/ed','I have learned ten new words.'],['Future Simple','Dự đoán, quyết định hoặc sự việc tương lai.','S + will + V nguyên mẫu','I will practice tomorrow.'],['Comparatives','So sánh hai người hoặc hai vật.','adj-er / more + adj + than','This book is more interesting than that one.'],['Modal verbs','Diễn tả khả năng, lời khuyên, nghĩa vụ.','can / should / must + V nguyên mẫu','You should review your notes.'],['Gerund & Infinitive','Một số động từ theo sau bởi V-ing hoặc to V.','enjoy + V-ing; want + to V','I enjoy reading. / I want to improve.'],['Prepositions','Giới từ chỉ thời gian, nơi chốn và quan hệ.','in / on / at / for / since...','I study at 7 p.m.'],['Conditionals type 1','Điều kiện có thể xảy ra ở hiện tại hoặc tương lai.','If + present simple, will + V','If I practice, I will improve.']];
-function renderGrammar(){$('grammarGrid').innerHTML=grammar.map((g,i)=>`<article class="lesson-card"><span class="pill">GRAMMAR ${String(i+1).padStart(2,'0')}</span><h3>${g[0]}</h3><p>${g[1]}</p><div class="notice"><b>${g[2]}</b><br><i>${g[3]}</i></div></article>`).join('')}
-const passages=[{text:'Many students think that learning English requires several hours every day. In fact, a small habit can make a big difference. You can learn five new words, listen to a short story, or read one page before going to bed. The most important thing is to practice regularly. After a few weeks, you may notice that understanding English becomes easier.',q:'What is the most important thing according to the passage?',opts:['Practice regularly','Study only at weekends','Memorize one hundred words','Avoid listening'],a:0},{text:'A library is more than a place with books. It is a quiet space where people can explore new ideas, study together, and develop their imagination. Many libraries also provide computers and free learning activities. Even in the digital age, libraries remain valuable because they help everyone access knowledge.',q:'Why do libraries remain valuable?',opts:['They sell new computers','They help people access knowledge','They are always crowded','They replace all schools'],a:1},{text:'Making mistakes is a natural part of learning. When students make an error, they can discover what they do not understand yet. Instead of feeling embarrassed, they should look at the correction and try again. Every mistake can become useful information that helps a learner improve.',q:'What should students do after making a mistake?',opts:['Stop studying','Hide the mistake','Look at the correction and try again','Blame other people'],a:2}];
+function finishTest(){
+  const score=Math.round(testScore/testItems.length*100);
+  testHistory.unshift({date:new Date().toLocaleDateString('vi-VN'),score,correct:testScore,total:testItems.length});
+  testHistory=testHistory.slice(0,20);
+  localStorage.setItem(STORAGE.history,JSON.stringify(testHistory));updateStats();renderHistory();
+  $('testQuestion').hidden=true;$('testResult').hidden=false;
+  $('testResult').innerHTML=`<div style="text-align:center;padding:22px"><div class="eyebrow">COMPLETED</div><div class="result-big">${score}%</div><h2>${testScore}/${testItems.length} câu đúng</h2><p class="muted">Hoàn thành một lượt luyện tập. Tiếp tục ôn những từ còn nhầm nhé.</p><button class="btn primary" onclick="startTest()">Làm bài mới</button></div>`;
+  $('testBar').style.width='100%';
+}
+function renderHistory(){
+  $('testHistory').innerHTML=testHistory.length?testHistory.map(h=>`<div class="word-card"><div><strong>${h.score}%</strong><p>${h.date} · ${h.correct}/${h.total} câu đúng</p></div></div>`).join(''):'<div class="empty">Chưa có lịch sử kiểm tra.</div>';
+}
+
+const grammar=[
+['Present Simple','Thói quen, sự thật hiển nhiên.','S + V(s/es)','She studies English every day.'],
+['Present Continuous','Hành động đang diễn ra tại thời điểm nói.','S + am/is/are + V-ing','I am reading a book now.'],
+['Past Simple','Hành động đã xảy ra và kết thúc trong quá khứ.','S + V2/ed','We visited Da Nang last summer.'],
+['Present Perfect','Trải nghiệm hoặc hành động có liên hệ hiện tại.','S + have/has + V3/ed','I have learned ten new words.'],
+['Future Simple','Dự đoán, quyết định hoặc sự việc tương lai.','S + will + V nguyên mẫu','I will practice tomorrow.'],
+['Comparatives','So sánh hai người hoặc hai vật.','adj-er / more + adj + than','This book is more interesting than that one.'],
+['Modal verbs','Diễn tả khả năng, lời khuyên, nghĩa vụ.','can / should / must + V nguyên mẫu','You should review your notes.'],
+['Gerund & Infinitive','Một số động từ theo sau bởi V-ing hoặc to V.','enjoy + V-ing; want + to V','I enjoy reading. / I want to improve.'],
+['Prepositions','Giới từ chỉ thời gian, nơi chốn và quan hệ.','in / on / at / for / since...','I study at 7 p.m.'],
+['Conditionals type 1','Điều kiện có thể xảy ra ở hiện tại hoặc tương lai.','If + present simple, will + V','If I practice, I will improve.']
+];
+
+function saveCustomGrammar(){
+  const name=$('grammarName').value.trim();
+  const description=$('grammarDescription').value.trim();
+  const formula=$('grammarFormula').value.trim();
+  const example=$('grammarExample').value.trim();
+
+  if(!name){
+    $('grammarStatus').textContent='Hãy nhập tên chủ điểm ngữ pháp.';
+    $('grammarName').focus();return;
+  }
+  if(!description&&!formula&&!example){
+    $('grammarStatus').textContent='Hãy nhập ít nhất một nội dung cho bài học.';
+    return;
+  }
+
+  const data={id:editingGrammarId||crypto.randomUUID(),name,description,formula,example};
+
+  if(editingGrammarId){
+    const index=customGrammar.findIndex(g=>g.id===editingGrammarId);
+    if(index!==-1)customGrammar[index]=data;
+  }else customGrammar.unshift(data);
+
+  localStorage.setItem(STORAGE.grammar,JSON.stringify(customGrammar));
+  clearGrammarForm();
+  renderCustomGrammar();
+  $('grammarStatus').textContent='Đã lưu bài ngữ pháp thành công.';
+}
+
+function clearGrammarForm(){
+  ['grammarName','grammarDescription','grammarFormula','grammarExample'].forEach(id=>$(id).value='');
+  editingGrammarId=null;
+}
+
+function editCustomGrammar(id){
+  const g=customGrammar.find(x=>x.id===id);if(!g)return;
+  editingGrammarId=id;
+  $('grammarName').value=g.name;
+  $('grammarDescription').value=g.description||'';
+  $('grammarFormula').value=g.formula||'';
+  $('grammarExample').value=g.example||'';
+  $('grammarStatus').textContent='Đang chỉnh sửa bài ngữ pháp. Bấm Lưu để cập nhật.';
+  $('grammarName').focus();
+}
+
+function deleteCustomGrammar(id){
+  if(!confirm('Xóa bài ngữ pháp này?'))return;
+  customGrammar=customGrammar.filter(g=>g.id!==id);
+  localStorage.setItem(STORAGE.grammar,JSON.stringify(customGrammar));
+  renderCustomGrammar();
+}
+
+function renderCustomGrammar(){
+  $('customGrammarCount').textContent=customGrammar.length+' LESSONS';
+  $('customGrammarGrid').innerHTML=customGrammar.length
+    ?customGrammar.map(g=>`
+      <article class="lesson-card">
+        <span class="pill">MY GRAMMAR</span>
+        <h3>${escapeHTML(g.name)}</h3>
+        <p>${escapeHTML(g.description||'Chưa có mô tả.')}</p>
+        ${g.formula?`<div class="notice"><b>Công thức</b><br>${escapeHTML(g.formula)}</div>`:''}
+        ${g.example?`<div class="notice"><b>Ví dụ</b><br><i>${escapeHTML(g.example)}</i></div>`:''}
+        <div class="actions">
+          <button class="mini-btn" onclick="editCustomGrammar('${g.id}')">Sửa</button>
+          <button class="mini-btn" onclick="deleteCustomGrammar('${g.id}')">Xóa</button>
+        </div>
+      </article>
+    `).join('')
+    :'<div class="empty">Chưa có bài ngữ pháp tự tạo. Hãy tạo bài đầu tiên nhé.</div>';
+}
+
+function renderGrammar(){
+  $('grammarGrid').innerHTML=grammar.map((g,i)=>`
+    <article class="lesson-card">
+      <span class="pill">GRAMMAR ${String(i+1).padStart(2,'0')}</span>
+      <h3>${escapeHTML(g[0])}</h3>
+      <p>${escapeHTML(g[1])}</p>
+      <div class="notice"><b>${escapeHTML(g[2])}</b><br><i>${escapeHTML(g[3])}</i></div>
+    </article>
+  `).join('');
+  renderCustomGrammar();
+}
+
+const passages=[
+{text:'Many students think that learning English requires several hours every day. In fact, a small habit can make a big difference. You can learn five new words, listen to a short story, or read one page before going to bed. The most important thing is to practice regularly. After a few weeks, you may notice that understanding English becomes easier.',q:'What is the most important thing according to the passage?',opts:['Practice regularly','Study only at weekends','Memorize one hundred words','Avoid listening'],a:0},
+{text:'A library is more than a place with books. It is a quiet space where people can explore new ideas, study together, and develop their imagination. Many libraries also provide computers and free learning activities. Even in the digital age, libraries remain valuable because they help everyone access knowledge.',q:'Why do libraries remain valuable?',opts:['They sell new computers','They help people access knowledge','They are always crowded','They replace all schools'],a:1},
+{text:'Making mistakes is a natural part of learning. When students make an error, they can discover what they do not understand yet. Instead of feeling embarrassed, they should look at the correction and try again. Every mistake can become useful information that helps a learner improve.',q:'What should students do after making a mistake?',opts:['Stop studying','Hide the mistake','Look at the correction and try again','Blame other people'],a:2}
+];
 let readingAnswered=false;
-function loadReading(){const p=passages[Number($('readingSelect').value)];$('readingText').innerHTML=p.text.split(/(\b[a-zA-Z']+\b)/).map(t=>/^[a-zA-Z']+$/.test(t)?`<span class="tapword" onclick="lookupReadingWord('${t.toLowerCase()}')">${t}</span>`:escapeHTML(t)).join('');$('readingQuestion').innerHTML=`<b>${p.q}</b><div class="choice-list">${p.opts.map((o,i)=>`<button class="choice" onclick="answerReading(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div>`;$('readingFeedback').textContent='Chọn câu trả lời để kiểm tra.';readingAnswered=false}
-function answerReading(i){if(readingAnswered)return;readingAnswered=true;const p=passages[Number($('readingSelect').value)];document.querySelectorAll('#readingQuestion .choice').forEach((b,j)=>{if(j===p.a)b.classList.add('correct');else if(j===i)b.classList.add('wrong');b.disabled=true});$('readingFeedback').textContent=i===p.a?'Chính xác! Mày đã nắm đúng ý chính.':'Chưa chính xác. Hãy đọc lại đoạn văn và tìm thông tin liên quan.'}
-function lookupReadingWord(word){const w=words.find(x=>x.word.toLowerCase()===word);$('readingLookup').textContent=w?`${word}: ${w.meaning}`:`“${word}” chưa có trong kho. Mày có thể tra từ ở mục Từ vựng.`}
+function loadReading(){
+  const p=passages[Number($('readingSelect').value)];
+  $('readingText').innerHTML=p.text.split(/(\b[a-zA-Z']+\b)/).map(t=>/^[a-zA-Z']+$/.test(t)?`<span class="tapword" onclick="lookupReadingWord('${t.toLowerCase()}')">${t}</span>`:escapeHTML(t)).join('');
+  $('readingQuestion').innerHTML=`<b>${p.q}</b><div class="choice-list">${p.opts.map((o,i)=>`<button class="choice" onclick="answerReading(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div>`;
+  $('readingFeedback').textContent='Chọn câu trả lời để kiểm tra.';readingAnswered=false;
+}
+function answerReading(i){
+  if(readingAnswered)return;readingAnswered=true;
+  const p=passages[Number($('readingSelect').value)];
+  document.querySelectorAll('#readingQuestion .choice').forEach((b,j)=>{
+    if(j===p.a)b.classList.add('correct');else if(j===i)b.classList.add('wrong');
+    b.disabled=true;
+  });
+  $('readingFeedback').textContent=i===p.a?'Chính xác! Mày đã nắm đúng ý chính.':'Chưa chính xác. Hãy đọc lại đoạn văn và tìm thông tin liên quan.';
+}
+function lookupReadingWord(word){
+  const w=words.find(x=>x.word.toLowerCase()===word);
+  $('readingLookup').textContent=w?`${word}: ${w.meaning}`:`“${word}” chưa có trong kho. Mày có thể tra từ ở mục Từ vựng.`;
+}
+
 const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-function startSpeechRecognition(){if(!SpeechRecognition){$('speechStatus').textContent='Trình duyệt này chưa hỗ trợ nhận diện giọng nói. Thử Chrome hoặc Edge mới nhất.';return}stopRecognition();recognition=new SpeechRecognition();recognition.lang='en-US';recognition.interimResults=true;recognition.continuous=false;recognition.onstart=()=>$('speechStatus').textContent='Đang nghe… Hãy nói câu tiếng Anh.';recognition.onresult=e=>{recognizedText=Array.from(e.results).map(r=>r[0].transcript).join(' ');$('speechResult').textContent=recognizedText};recognition.onerror=e=>$('speechStatus').textContent='Không thể nhận diện: '+e.error+'. Kiểm tra quyền micro và kết nối.';recognition.onend=()=>$('speechStatus').textContent='Đã kết thúc lượt nói.';try{recognition.start()}catch(e){$('speechStatus').textContent='Không thể khởi động micro. Hãy thử lại.'}}
+function startSpeechRecognition(){
+  if(!SpeechRecognition){$('speechStatus').textContent='Trình duyệt này chưa hỗ trợ nhận diện giọng nói. Thử Chrome hoặc Edge mới nhất.';return}
+  stopRecognition();recognition=new SpeechRecognition();
+  recognition.lang='en-US';recognition.interimResults=true;recognition.continuous=false;
+  recognition.onstart=()=>$('speechStatus').textContent='Đang nghe… Hãy nói câu tiếng Anh.';
+  recognition.onresult=e=>{recognizedText=Array.from(e.results).map(r=>r[0].transcript).join(' ');$('speechResult').textContent=recognizedText};
+  recognition.onerror=e=>$('speechStatus').textContent='Không thể nhận diện: '+e.error+'. Kiểm tra quyền micro và kết nối.';
+  recognition.onend=()=>$('speechStatus').textContent='Đã kết thúc lượt nói.';
+  try{recognition.start()}catch(e){$('speechStatus').textContent='Không thể khởi động micro. Hãy thử lại.'}
+}
 function stopRecognition(){if(recognition){try{recognition.stop()}catch(e){}recognition=null}}
 function speakPromptText(){speakText($('speakPrompt').value)}
-function compareSpeech(){const target=$('speakPrompt').value.toLowerCase().replace(/[^\w\s]/g,'').split(/\s+/),said=recognizedText.toLowerCase().replace(/[^\w\s]/g,'').split(/\s+/);if(!recognizedText){$('speechCompare').textContent='Chưa có nội dung nhận diện để đối chiếu.';return}const matched=target.filter(w=>said.includes(w)).length;$('speechCompare').textContent=`Đối chiếu văn bản: nhận diện được ${matched}/${target.length} từ trong câu mẫu. Đây chỉ là so khớp văn bản, không đánh giá chính xác phát âm.`}
+function compareSpeech(){
+  const target=$('speakPrompt').value.toLowerCase().replace(/[^\w\s]/g,'').split(/\s+/);
+  const said=recognizedText.toLowerCase().replace(/[^\w\s]/g,'').split(/\s+/);
+  if(!recognizedText){$('speechCompare').textContent='Chưa có nội dung nhận diện để đối chiếu.';return}
+  const matched=target.filter(w=>said.includes(w)).length;
+  $('speechCompare').textContent=`Đối chiếu văn bản: nhận diện được ${matched}/${target.length} từ trong câu mẫu. Đây chỉ là so khớp văn bản, không đánh giá chính xác phát âm.`;
+}
+
 const bgPresets={ocean:['#e7f8fb','#ccecf3'],sky:['#eef4ff','#cbdcf8'],lavender:['#f5f0ff','#d9cff3'],mint:['#edfff6','#c5ecda'],peach:['#fff4ec','#f3d4c5'],night:['#dce7f4','#a6bdd6']};
-function setBackground(name){const c=bgPresets[name];if(!c)return;document.body.style.backgroundImage=`linear-gradient(135deg,${c[0]},${c[1]})`;document.body.style.backgroundColor=c[0];localStorage.setItem(STORAGE.bg,name);$('bgStatus').textContent='Đã áp dụng hình nền.';document.querySelectorAll('.swatch').forEach((b,i)=>b.classList.toggle('selected',Object.keys(bgPresets)[i]===name))}
-function resetBackground(){localStorage.removeItem(STORAGE.bg);localStorage.removeItem('lexinote_bg_image_v3');setBackground('ocean');$('bgUpload').value='';$('bgStatus').textContent='Đã khôi phục hình nền mặc định.'}
-function uploadBackground(e){const f=e.target.files[0];if(!f)return;if(!/^image\/(png|jpeg|webp)$/.test(f.type)||f.size>3*1024*1024){$('bgStatus').textContent='Ảnh phải là PNG/JPG/WEBP và không quá 3 MB.';e.target.value='';return}const r=new FileReader();r.onload=()=>{try{localStorage.setItem('lexinote_bg_image_v3',r.result);document.body.style.backgroundImage=`url("${r.result}")`;document.body.style.backgroundSize='cover';$('bgStatus').textContent='Đã lưu hình nền tùy chỉnh.'}catch{$('bgStatus').textContent='Ảnh quá lớn để lưu. Hãy chọn ảnh nhỏ hơn.'}};r.readAsDataURL(f)}
-function applySavedBackground(){const img=localStorage.getItem('lexinote_bg_image_v3');if(img){document.body.style.backgroundImage=`url("${img}")`;document.body.style.backgroundSize='cover'}else setBackground(localStorage.getItem(STORAGE.bg)||'ocean')}
-function uploadAvatar(e){const f=e.target.files[0];if(!f)return;if(!/^image\/(png|jpeg|webp)$/.test(f.type)||f.size>2*1024*1024){$('avatarStatus').textContent='Ảnh phải là PNG/JPG/WEBP và không quá 2 MB.';e.target.value='';return}const r=new FileReader();r.onload=()=>{try{localStorage.setItem(STORAGE.avatar,r.result);applyAvatar(r.result);$('avatarStatus').textContent='Đã lưu avatar.'}catch{$('avatarStatus').textContent='Không thể lưu ảnh. Hãy chọn ảnh nhỏ hơn.'}};r.readAsDataURL(f)}
-function applyAvatar(src){if(src){$('avatarPreview').src=src;$('avatarPreview').hidden=false;$('avatarPlaceholder').hidden=true;$('sideAvatar').src=src;$('heroAvatar').innerHTML=`<img src="${src}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`}else{$('avatarPreview').hidden=true;$('avatarPlaceholder').hidden=false;$('sideAvatar').src='';$('heroAvatar').textContent='📚'}}
-function resetAvatar(){localStorage.removeItem(STORAGE.avatar);applyAvatar('');$('avatarUpload').value='';$('avatarStatus').textContent='Đã đặt lại avatar mặc định.'}
-function saveDisplayName(){const n=$('displayName').value.trim()||'English learner';localStorage.setItem(STORAGE.name,n);$('sideName').textContent=n}
-function init(){$('today').textContent=new Date().toLocaleDateString('vi-VN',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});const name=localStorage.getItem(STORAGE.name)||'English learner';$('displayName').value=name;$('sideName').textContent=name;applyAvatar(localStorage.getItem(STORAGE.avatar));applySavedBackground();updateStats();renderWords();renderHistory();refreshSelects();renderGrammar();loadReading()}
+function setBackground(name){
+  const c=bgPresets[name];if(!c)return;
+  document.body.style.backgroundImage=`linear-gradient(135deg,${c[0]},${c[1]})`;
+  document.body.style.backgroundColor=c[0];localStorage.setItem(STORAGE.bg,name);
+  $('bgStatus').textContent='Đã áp dụng hình nền.';
+  document.querySelectorAll('.swatch').forEach((b,i)=>b.classList.toggle('selected',Object.keys(bgPresets)[i]===name));
+}
+function resetBackground(){
+  localStorage.removeItem(STORAGE.bg);localStorage.removeItem('lexinote_bg_image_v3');
+  setBackground('ocean');$('bgUpload').value='';$('bgStatus').textContent='Đã khôi phục hình nền mặc định.';
+}
+function uploadBackground(e){
+  const f=e.target.files[0];if(!f)return;
+  if(!/^image\/(png|jpeg|webp)$/.test(f.type)||f.size>3*1024*1024){
+    $('bgStatus').textContent='Ảnh phải là PNG/JPG/WEBP và không quá 3 MB.';e.target.value='';return;
+  }
+  const r=new FileReader();
+  r.onload=()=>{
+    try{localStorage.setItem('lexinote_bg_image_v3',r.result);document.body.style.backgroundImage=`url("${r.result}")`;document.body.style.backgroundSize='cover';$('bgStatus').textContent='Đã lưu hình nền tùy chỉnh.'}
+    catch{$('bgStatus').textContent='Ảnh quá lớn để lưu. Hãy chọn ảnh nhỏ hơn.'}
+  };
+  r.readAsDataURL(f);
+}
+function applySavedBackground(){
+  const img=localStorage.getItem('lexinote_bg_image_v3');
+  if(img){document.body.style.backgroundImage=`url("${img}")`;document.body.style.backgroundSize='cover'}
+  else setBackground(localStorage.getItem(STORAGE.bg)||'ocean');
+}
+function uploadAvatar(e){
+  const f=e.target.files[0];if(!f)return;
+  if(!/^image\/(png|jpeg|webp)$/.test(f.type)||f.size>2*1024*1024){
+    $('avatarStatus').textContent='Ảnh phải là PNG/JPG/WEBP và không quá 2 MB.';e.target.value='';return;
+  }
+  const r=new FileReader();
+  r.onload=()=>{
+    try{localStorage.setItem(STORAGE.avatar,r.result);applyAvatar(r.result);$('avatarStatus').textContent='Đã lưu avatar.'}
+    catch{$('avatarStatus').textContent='Không thể lưu ảnh. Hãy chọn ảnh nhỏ hơn.'}
+  };
+  r.readAsDataURL(f);
+}
+function applyAvatar(src){
+  if(src){
+    $('avatarPreview').src=src;$('avatarPreview').hidden=false;$('avatarPlaceholder').hidden=true;
+    $('sideAvatar').src=src;
+    $('heroAvatar').innerHTML=`<img src="${src}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`;
+  }else{
+    $('avatarPreview').hidden=true;$('avatarPlaceholder').hidden=false;
+    $('sideAvatar').src='';$('heroAvatar').textContent='📚';
+  }
+}
+function resetAvatar(){
+  localStorage.removeItem(STORAGE.avatar);applyAvatar('');
+  $('avatarUpload').value='';$('avatarStatus').textContent='Đã đặt lại avatar mặc định.';
+}
+function saveDisplayName(){
+  const n=$('displayName').value.trim()||'English learner';
+  localStorage.setItem(STORAGE.name,n);$('sideName').textContent=n;
+}
+
+function init(){
+  $('today').textContent=new Date().toLocaleDateString('vi-VN',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
+  const name=localStorage.getItem(STORAGE.name)||'English learner';
+  $('displayName').value=name;$('sideName').textContent=name;
+  applyAvatar(localStorage.getItem(STORAGE.avatar));
+  applySavedBackground();
+  updateStats();renderWords();renderHistory();refreshSelects();
+  renderGrammar();loadReading();
+}
 init();
 </script>
 </body>
