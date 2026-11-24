@@ -208,10 +208,14 @@ select.field{cursor:pointer}
 </section>
 
 <section class="page" id="page-test">
-<div class="section-head"><div><h2>Vocabulary challenge</h2><p>Bài kiểm tra lấy câu hỏi trực tiếp từ kho từ vựng đã lưu.</p></div></div>
+<div class="section-head"><div><h2>Vocabulary challenge</h2><p>Kiểm tra toàn diện: hiểu nghĩa, nghe, đọc, dùng từ, mặt chữ và word form.</p></div><span class="pill">6 SKILLS</span></div>
 <div class="grid-2">
-<div class="panel"><h3>Thiết lập bài kiểm tra</h3><p class="panel-sub">Cần ít nhất 2 từ trong kho để tạo bài kiểm tra.</p><div class="form-row"><label>HƯỚNG KIỂM TRA</label><select class="field" id="testDirection"><option value="en">Anh → Việt</option><option value="vi">Việt → Anh</option></select></div><div class="form-row"><label>SỐ CÂU</label><select class="field" id="testCount"><option>5</option><option>10</option><option>15</option><option>20</option></select></div><button class="btn primary" onclick="startTest()">Bắt đầu kiểm tra →</button><div class="notice" id="testSetupStatus">Mỗi câu có tối đa 4 lựa chọn khác nhau; số câu tự điều chỉnh theo kho từ. Kết quả được lưu trên thiết bị.</div></div>
-<div class="panel" id="testPanel"><div id="testIntro"><h3>🎯 Sẵn sàng thử sức?</h3><p class="muted">Chọn số câu và hướng kiểm tra, sau đó bắt đầu. Hệ thống sẽ trộn câu hỏi để mỗi lượt luyện tập khác nhau.</p></div><div id="testQuestion" hidden><div style="display:flex;justify-content:space-between"><span class="pill" id="questionCounter">Câu 1</span><span class="pill" id="questionScore">Đúng: 0</span></div><div class="progress"><span id="testBar"></span></div><h2 id="questionText" style="margin:18px 0 8px"></h2><div id="choiceList" class="choice-list"></div><div class="notice" id="answerFeedback" aria-live="polite">Chọn một đáp án.</div><button class="btn primary" id="nextQuestionBtn" onclick="nextQuestion()" hidden style="margin-top:12px">Câu tiếp theo →</button></div><div id="testResult" hidden></div></div>
+<div class="panel"><h3>Thiết lập bài kiểm tra</h3><p class="panel-sub">Nên có ít nhất 2 từ trong kho. Chế độ trộn sẽ chọn dạng câu hỏi phù hợp với dữ liệu từ đã lưu.</p>
+<div class="form-row"><label>DẠNG KIỂM TRA</label><select class="field" id="testMode"><option value="all">Trộn tất cả kỹ năng</option><option value="meaning">Kiểm tra nghĩa</option><option value="listening">Listening — nghe và nhận diện</option><option value="reading">Reading — đọc hiểu ngữ cảnh</option><option value="sentence">Cách dùng trong câu</option><option value="wordform">Word form — nhận biết loại từ</option><option value="spelling">Mặt chữ — viết đúng từ</option></select></div>
+<div class="form-row"><label>SỐ CÂU</label><select class="field" id="testCount"><option>5</option><option>10</option><option>15</option><option>20</option><option>30</option></select></div>
+<button class="btn primary" onclick="startTest()">Bắt đầu kiểm tra →</button><div class="notice" id="testSetupStatus">Mỗi lượt sẽ được xáo trộn. Listening dùng giọng đọc của thiết bị; lịch sử và điểm số được lưu trên trình duyệt.</div></div>
+<div class="panel" id="testPanel"><div id="testIntro"><h3>🎯 Sẵn sàng thử sức?</h3><p class="muted">Không chỉ dịch nghĩa — mày sẽ phải nhận diện từ qua âm thanh, ngữ cảnh, cách dùng và loại từ.</p><div class="divider"></div><p class="small muted">💡 Nút Gợi ý xuất hiện trong mỗi câu. Gợi ý chỉ mở một manh mối, không tiết lộ đáp án hoàn chỉnh.</p></div>
+<div id="testQuestion" hidden><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span class="pill" id="questionCounter">Câu 1</span><span class="pill" id="questionType">DẠNG CÂU HỎI</span><span class="pill" id="questionScore">Đúng: 0</span></div><div class="progress"><span id="testBar"></span></div><h2 id="questionText" style="margin:18px 0 8px"></h2><div id="questionExtra" class="reading-passage" hidden style="margin:12px 0"></div><div id="listenControls" class="actions" hidden><button class="btn primary" onclick="playTestAudio()">▶ Nghe lại</button></div><div id="choiceList" class="choice-list"></div><div id="inputAnswerWrap" hidden><input id="testTextAnswer" class="field" autocomplete="off" placeholder="Nhập câu trả lời..." onkeydown="if(event.key==='Enter')submitTextAnswer()"><div class="actions"><button class="btn primary" onclick="submitTextAnswer()">Trả lời</button></div></div><div class="actions" style="margin-top:8px"><button class="btn" id="hintBtn" onclick="showTestHint()">💡 Gợi ý</button></div><div class="notice" id="answerFeedback" aria-live="polite">Chọn hoặc nhập đáp án.</div><button class="btn primary" id="nextQuestionBtn" onclick="nextQuestion()" hidden style="margin-top:12px">Câu tiếp theo →</button></div><div id="testResult" hidden></div></div>
 </div>
 <div class="panel" style="margin-top:16px"><h3>Lịch sử luyện tập</h3><div id="testHistory" class="word-list"></div></div>
 </section>
@@ -506,57 +510,127 @@ function speakCustom(){const t=$('listenText').value.trim();if(t)speakText(t);el
 function stopSpeech(){if('speechSynthesis'in window)speechSynthesis.cancel()}
 if('speechSynthesis'in window){getVoices();speechSynthesis.onvoiceschanged=getVoices}
 
+const TEST_TYPES={meaning:'KIỂM TRA NGHĨA',listening:'LISTENING',reading:'READING',sentence:'CÁCH DÙNG TRONG CÂU',wordform:'WORD FORM',spelling:'MẶT CHỮ'};
+let testHints=0,testWrong=[],currentTestAudio='';
+function shuffleArray(a){return [...a].sort(()=>Math.random()-.5)}
+function getPosKey(w){const p=String(w.pos||'').toLowerCase();if(/noun|danh từ|\(n\)/.test(p))return 'noun';if(/verb|động từ|\(v\)/.test(p))return 'verb';if(/adjective|tính từ|\badj\b/.test(p))return 'adjective';if(/adverb|trạng từ|\badv\b/.test(p))return 'adverb';return 'other'}
+function getPosLabel(w){return String(w.pos||'').trim()||'Chưa xác định loại từ'}
+function mainMeaning(w){return String(w.meaning||'').split(/\n|;/).map(x=>x.trim()).filter(Boolean)[0]||''}
+function distinctAnswers(values,correct){return [...new Set(values.map(x=>String(x||'').trim()).filter(x=>x&&x.toLowerCase()!==String(correct).toLowerCase()))]}
+function makeChoices(correct,w,type){
+ let pool=[];
+ if(type==='meaning'){pool=words.filter(x=>x.id!==w.id).map(x=>x.word.toLowerCase()===String(correct).toLowerCase()?mainMeaning(x):x.word);if(words.some(x=>x.word.toLowerCase()===String(correct).toLowerCase()))pool=words.filter(x=>x.id!==w.id).map(x=>x.word);else pool=words.filter(x=>x.id!==w.id).map(mainMeaning)}
+ else if(type==='reading')pool=words.filter(x=>x.id!==w.id).map(mainMeaning);
+ else if(type==='wordform')pool=['Danh từ (noun)','Động từ (verb)','Tính từ (adjective)','Trạng từ (adverb)','Cụm từ (phrase)'];
+ else pool=words.filter(x=>x.id!==w.id).map(x=>x.word);
+ const distractors=shuffleArray(distinctAnswers(pool,correct)).slice(0,3);
+ const options=shuffleArray([correct,...distractors]);
+ return options;
+}
+const readingTestBank=[
+ {passage:'Mai visits the school library every Wednesday. She borrows one English book and reads it for twenty minutes before going home. She writes new words in a small notebook.',prompt:'What does Mai do after borrowing an English book?',answer:'She reads it for twenty minutes.',options:['She reads it for twenty minutes.','She plays basketball.','She goes to the supermarket.','She watches a movie.'],hint:'Look at the second sentence.',explain:'Mai reads the book for twenty minutes before going home.'},
+ {passage:'Nam wanted to help the environment. He put paper, plastic bottles and cans into separate recycling bins. His class collected the materials every Friday.',prompt:'Why did Nam separate the materials?',answer:'To help the environment.',options:['To help the environment.','To finish his homework.','To decorate his room.','To feed his pet.'],hint:'Find the first sentence for the reason.',explain:'The passage says Nam wanted to help the environment.'},
+ {passage:'Linh was nervous before her English presentation. She practised in front of a mirror every evening. On presentation day, she spoke clearly and received warm applause from her classmates.',prompt:'How did Linh prepare for her presentation?',answer:'She practised in front of a mirror.',options:['She practised in front of a mirror.','She cancelled the presentation.','She asked a friend to speak for her.','She stayed up playing games.'],hint:'Look for the sentence beginning with “She practised”.',explain:'Linh practised in front of a mirror every evening.'},
+ {passage:'The weather was sunny on Saturday, so Peter and his family went to the beach. They brought sandwiches and fruit. After lunch, they picked up their rubbish before leaving.',prompt:'What did the family do before leaving the beach?',answer:'They picked up their rubbish.',options:['They picked up their rubbish.','They bought a new tent.','They went swimming at night.','They planted flowers.'],hint:'Check the final sentence.',explain:'They picked up their rubbish before leaving.'},
+ {passage:'Anna has a busy school day, but she always makes time for exercise. She rides her bicycle to school when the weather is good. At weekends, she sometimes plays badminton with her cousin.',prompt:'Which activity does Anna sometimes do at weekends?',answer:'She plays badminton with her cousin.',options:['She plays badminton with her cousin.','She rides a horse to school.','She visits the library every night.','She cooks dinner at school.'],hint:'The answer is in the last sentence.',explain:'At weekends, Anna sometimes plays badminton with her cousin.'},
+ {passage:'The science club planned a small garden behind the classroom. The students planted tomatoes and flowers. They took turns watering the plants and recording how they grew.',prompt:'What did the students record?',answer:'How the plants grew.',options:['How the plants grew.','The price of their school bags.','The number of buses outside.','The names of every teacher.'],hint:'Look at what they recorded after watering the plants.',explain:'They recorded how the plants grew.'}
+];
+function buildReadingQuestion(){const r=readingTestBank[Math.floor(Math.random()*readingTestBank.length)];return {type:'reading',kind:'choice',prompt:r.prompt,passage:escapeHTML(r.passage),answer:r.answer,options:shuffleArray(r.options),hint:r.hint,explain:r.explain,w:null}}
+function buildQuestion(w,type){
+ const meaning=mainMeaning(w),pos=getPosKey(w),word=w.word;
+ let q={type,w,kind:'choice',answer:'',prompt:'',hint:'',explain:''};
+ if(type==='meaning'){
+  const en=Math.random()<.5;q.answer=en?meaning:word;q.prompt=en?`Nghĩa tiếng Việt phù hợp với “${word}” là gì?`:`Từ tiếng Anh nào tương ứng với “${meaning}”?`;q.options=makeChoices(q.answer,w,en?'meaning':'spelling');q.hint=`Loại từ: ${getPosLabel(w)}. ${en?'Nghĩa có liên quan đến từ đang hỏi.':'Từ cần tìm bắt đầu bằng chữ “'+word[0].toUpperCase()+'”.'}`;q.explain=`${word} — ${meaning}`;
+ }else if(type==='listening'){
+  q.answer=word;q.prompt='Nghe từ được phát âm rồi chọn cách viết đúng.';q.options=makeChoices(word,w,'spelling');q.audio=word;q.hint=`Từ được phát âm có ${word.length} ký tự.`;q.explain=`Từ vừa nghe là “${word}” — ${meaning}`;
+ }else if(type==='reading'){
+  let sentence='';
+  if(pos==='verb')sentence=`Every afternoon, Linh likes to ${word} after finishing her homework. It is part of her daily routine.`;
+  else if(pos==='adjective')sentence=`Linh felt ${word} when she received the good news. Her smile showed how she felt.`;
+  else if(pos==='adverb')sentence=`Linh completed the task ${word}. Her teacher noticed the way she did it.`;
+  else if(pos==='noun')sentence=`Linh found the word “${word}” in her English book. She looked it up to understand the sentence.`;
+  else sentence=`Linh saw the word “${word}” in a short English text. She used the surrounding sentence to understand it.`;
+  q.prompt='Đọc đoạn ngắn rồi chọn nghĩa phù hợp nhất của từ được in đậm.';q.passage=sentence.replace(word,`<strong>${escapeHTML(word)}</strong>`);q.answer=meaning;q.options=makeChoices(meaning,w,'reading');q.hint=`Chú ý ngữ cảnh và loại từ: ${getPosLabel(w)}.`;q.explain=`${word} có nghĩa là: ${meaning}`;
+ }else if(type==='sentence'){
+  let sentence='';
+  if(pos==='verb')sentence=`I want to ______ every day to improve my English.`;
+  else if(pos==='adjective')sentence=`The story is very ______, so I want to read it again.`;
+  else if(pos==='adverb')sentence=`She speaks English ______ in class.`;
+  else if(pos==='noun')sentence=`I learned a new ______ in English class today.`;
+  else sentence=`Choose the word that best completes this sentence: “I learned ______ today.”`;
+  q.prompt='Chọn từ trong kho phù hợp nhất để điền vào chỗ trống.';q.passage=escapeHTML(sentence);q.answer=word;q.options=makeChoices(word,w,'spelling');q.hint=`Từ cần điền thuộc loại: ${getPosLabel(w)}.`;q.explain=`Đáp án: ${word}. Nghĩa: ${meaning}. Loại từ: ${getPosLabel(w)}.`;
+ }else if(type==='wordform'){
+  const labels={noun:'Danh từ (noun)',verb:'Động từ (verb)',adjective:'Tính từ (adjective)',adverb:'Trạng từ (adverb)',other:/\s/.test(word)?'Cụm từ (phrase)':getPosLabel(w)};
+  q.answer=labels[pos];q.prompt=`Từ “${word}” thuộc loại từ nào?`;q.options=makeChoices(q.answer,w,'wordform');q.hint=`Trong nghĩa tiếng Việt, hãy nghĩ xem từ này dùng để gọi tên sự vật, diễn tả hành động hay miêu tả đặc điểm.`;q.explain=`${word}: ${q.answer}. Nghĩa: ${meaning}.`;
+ }else if(type==='spelling'){
+  q.kind='input';q.answer=word;q.prompt=`Viết từ tiếng Anh có nghĩa: “${meaning}”.`;q.hint=`Từ có ${word.length} ký tự và bắt đầu bằng “${word[0].toUpperCase()}”.`;q.explain=`Cách viết đúng: ${word}.`;
+ }
+ return q;
+}
+function chooseTestTypes(mode){return mode==='all'?Object.keys(TEST_TYPES):[mode]}
 function startTest(){
  if(words.length<2){$('testSetupStatus').textContent='Cần ít nhất 2 từ đã lưu để tạo bài kiểm tra.';return}
- const requested=Math.max(2,Number($('testCount').value)||5);
- const count=Math.min(requested,words.length);
- testItems=[...words].sort(()=>Math.random()-.5).slice(0,count);
- testIndex=0;testScore=0;testAnswered=false;
- $('testIntro').hidden=true;$('testResult').hidden=true;$('testQuestion').hidden=false;
- $('testSetupStatus').textContent=`Đã tạo bài kiểm tra gồm ${count} câu.`;
- renderQuestion();
+ const mode=$('testMode').value,types=chooseTestTypes(mode),requested=Math.max(2,Number($('testCount').value)||5);
+ let eligible=words.filter(w=>w.word&&mainMeaning(w));
+ if(!eligible.length){$('testSetupStatus').textContent='Kho từ chưa có đủ từ và nghĩa để tạo câu hỏi.';return}
+ let pool=[];
+ types.forEach(type=>{
+  if(type==='reading'){pool.push(...shuffleArray(readingTestBank).map(r=>({type:'reading',kind:'choice',prompt:r.prompt,passage:escapeHTML(r.passage),answer:r.answer,options:shuffleArray(r.options),hint:r.hint,explain:r.explain,w:null})));return;}
+  let source=eligible;
+  if(type==='wordform')source=eligible.filter(w=>getPosKey(w)!=='other'||/\s/.test(w.word));
+  if(source.length)source.forEach(w=>pool.push(buildQuestion(w,type)));
+ });
+ if(!pool.length){$('testSetupStatus').textContent='Chưa có dữ liệu phù hợp cho dạng kiểm tra này. Hãy bổ sung loại từ trong kho.';return}
+ testItems=shuffleArray(pool).slice(0,Math.min(requested,pool.length));
+ if(testItems.length<requested)$('testSetupStatus').textContent=`Tạo được ${testItems.length} câu phù hợp với dữ liệu hiện có.`;
+ else $('testSetupStatus').textContent=`Đã tạo ${testItems.length} câu hỏi. Chúc mày làm bài tốt!`;
+ testIndex=0;testScore=0;testAnswered=false;testHints=0;testWrong=[];
+ $('testIntro').hidden=true;$('testResult').hidden=true;$('testQuestion').hidden=false;renderQuestion();
 }
 function renderQuestion(){
- const w=testItems[testIndex],en=$('testDirection').value==='en';
- const correct=en?w.meaning:w.word;
- const pool=words.filter(x=>x.id!==w.id).map(x=>en?x.meaning:x.word).filter(x=>x&&x!==correct);
- const uniquePool=[...new Set(pool)].sort(()=>Math.random()-.5);
- testOptions=[correct,...uniquePool.slice(0,3)].sort(()=>Math.random()-.5);
- $('questionCounter').textContent=`Câu ${testIndex+1} / ${testItems.length}`;
- $('questionScore').textContent='Đúng: '+testScore;
- $('testBar').style.width=(testIndex/testItems.length*100)+'%';
- $('questionText').textContent=en?w.word:w.meaning;
- $('choiceList').innerHTML=testOptions.map((o,i)=>`<button class="choice" onclick="answerQuestion(this,${i})">${String.fromCharCode(65+i)}. ${escapeHTML(o)}</button>`).join('');
- $('answerFeedback').textContent='Chọn một đáp án.';
- $('nextQuestionBtn').hidden=true;testAnswered=false;
+ const q=testItems[testIndex];if(!q)return;
+ $('questionCounter').textContent=`Câu ${testIndex+1} / ${testItems.length}`;$('questionType').textContent=TEST_TYPES[q.type];$('questionScore').textContent='Đúng: '+testScore;
+ $('testBar').style.width=(testIndex/testItems.length*100)+'%';$('questionText').textContent=q.prompt;
+ $('questionExtra').hidden=!q.passage;$('questionExtra').innerHTML=q.passage||'';
+ $('listenControls').hidden=q.type!=='listening';currentTestAudio=q.audio||'';
+ $('choiceList').hidden=q.kind!=='choice';$('inputAnswerWrap').hidden=q.kind!=='input';$('choiceList').innerHTML=q.kind==='choice'?q.options.map((o,i)=>`<button class="choice" onclick="answerQuestion(this,${i})">${String.fromCharCode(65+i)}. ${escapeHTML(o)}</button>`).join(''):'';
+ $('testTextAnswer').value='';$('testTextAnswer').disabled=false;
+ $('answerFeedback').textContent=q.kind==='input'?'Nhập đáp án rồi nhấn Trả lời.':'Chọn một đáp án.';
+ $('hintBtn').disabled=false;$('hintBtn').textContent='💡 Gợi ý';$('nextQuestionBtn').hidden=true;testAnswered=false;
+}
+function markAnswered(correct,chosen){
+ const q=testItems[testIndex];testAnswered=true;
+ if(correct){testScore++;$('answerFeedback').textContent='Chính xác! +1 điểm. '+q.explain;}
+ else{$('answerFeedback').textContent='Chưa đúng. '+q.explain;testWrong.push({question:q.prompt,answer:q.answer,chosen:chosen||'—',type:q.type});}
+ $('questionScore').textContent='Đúng: '+testScore;$('hintBtn').disabled=true;$('nextQuestionBtn').hidden=false;$('nextQuestionBtn').textContent=testIndex===testItems.length-1?'Xem kết quả':'Câu tiếp theo →';
 }
 function answerQuestion(btn,index){
- if(testAnswered)return;testAnswered=true;
- const w=testItems[testIndex],correct=$('testDirection').value==='en'?w.meaning:w.word;
- document.querySelectorAll('#choiceList .choice').forEach((b,i)=>{
-  if(testOptions[i]===correct)b.classList.add('correct');
-  else if(b===btn)b.classList.add('wrong');
-  b.disabled=true;
- });
- if(testOptions[index]===correct){testScore++;$('answerFeedback').textContent='Chính xác! +1 điểm.'}
- else $('answerFeedback').textContent='Chưa đúng. Đáp án: '+correct;
- $('questionScore').textContent='Đúng: '+testScore;
- $('nextQuestionBtn').hidden=false;
- $('nextQuestionBtn').textContent=testIndex===testItems.length-1?'Xem kết quả':'Câu tiếp theo →';
+ if(testAnswered)return;const q=testItems[testIndex],chosen=q.options[index];
+ document.querySelectorAll('#choiceList .choice').forEach((b,i)=>{if(q.options[i]===q.answer)b.classList.add('correct');else if(b===btn)b.classList.add('wrong');b.disabled=true;});
+ markAnswered(chosen===q.answer,chosen);
+}
+function submitTextAnswer(){
+ if(testAnswered)return;const q=testItems[testIndex],value=$('testTextAnswer').value.trim();if(!value){$('answerFeedback').textContent='Nhập câu trả lời trước nhé.';return}
+ $('testTextAnswer').disabled=true;markAnswered(value.toLowerCase()===q.answer.toLowerCase(),value);
+}
+function playTestAudio(){if(currentTestAudio)speakText(currentTestAudio,.82)}
+function showTestHint(){
+ if(testAnswered)return;const q=testItems[testIndex];testHints++;
+ if(q.kind==='input'){$('answerFeedback').textContent='💡 Gợi ý: '+q.hint;return}
+ if(q.type==='listening')playTestAudio();
+ let removed=false;const wrong=[...document.querySelectorAll('#choiceList .choice')].filter(b=>b.textContent.slice(3).trim()!==q.answer&&!b.disabled);
+ if(wrong.length>1){wrong[0].disabled=true;wrong[0].style.opacity='.35';wrong[0].textContent+=' (loại bởi gợi ý)';removed=true;}
+ $('answerFeedback').textContent='💡 Gợi ý: '+q.hint+(removed?' Đã loại một lựa chọn.':'');$('hintBtn').disabled=true;
 }
 function nextQuestion(){if(!testAnswered)return;testIndex++;if(testIndex<testItems.length)renderQuestion();else finishTest()}
 function finishTest(){
- const score=Math.round(testScore/testItems.length*100);
- testHistory.unshift({date:new Date().toLocaleDateString('vi-VN'),score,correct:testScore,total:testItems.length});
- testHistory=testHistory.slice(0,20);
- localStorage.setItem(STORAGE.history,JSON.stringify(testHistory));
- updateStats();renderHistory();
- $('testQuestion').hidden=true;$('testResult').hidden=false;
- $('testResult').innerHTML=`<div style="text-align:center;padding:22px"><div class="eyebrow">COMPLETED</div><div class="result-big">${score}%</div><h2>${testScore}/${testItems.length} câu đúng</h2><p class="muted">Hoàn thành một lượt luyện tập. Tiếp tục ôn những từ còn nhầm nhé.</p><button class="btn primary" onclick="startTest()">Làm bài mới</button></div>`;
- $('testBar').style.width='100%';
+ const score=Math.round(testScore/testItems.length*100),mode=$('testMode').value;
+ testHistory.unshift({date:new Date().toLocaleDateString('vi-VN'),score,correct:testScore,total:testItems.length,hints:testHints,mode});testHistory=testHistory.slice(0,30);localStorage.setItem(STORAGE.history,JSON.stringify(testHistory));updateStats();renderHistory();
+ const wrongHtml=testWrong.length?`<div class="divider"></div><h3>Những câu cần ôn lại</h3>${testWrong.map(x=>`<div class="word-card"><div><strong>${escapeHTML(x.question)}</strong><p>Đáp án: ${escapeHTML(x.answer)} · Mày chọn: ${escapeHTML(x.chosen)}</p></div></div>`).join('')}`:'<p class="muted">Tuyệt vời, mày không có câu nào sai.</p>';
+ $('testQuestion').hidden=true;$('testResult').hidden=false;$('testResult').innerHTML=`<div style="text-align:center;padding:18px 8px"><div class="eyebrow">COMPLETED</div><div class="result-big">${score}%</div><h2>${testScore}/${testItems.length} câu đúng</h2><p class="muted">Đã dùng ${testHints} gợi ý. ${score>=80?'Nắm khá chắc rồi!': 'Xem lại những câu sai để củng cố nhé.'}</p><button class="btn primary" onclick="startTest()">Làm bài mới</button></div>${wrongHtml}`;$('testBar').style.width='100%';
 }
 function renderHistory(){
- $('testHistory').innerHTML=testHistory.length?testHistory.map(h=>`<div class="word-card"><div><strong>${h.score}%</strong><p>${h.date} · ${h.correct}/${h.total} câu đúng</p></div></div>`).join(''):'<div class="empty">Chưa có lịch sử kiểm tra.</div>';
+ $('testHistory').innerHTML=testHistory.length?testHistory.map(h=>`<div class="word-card"><div><strong>${h.score}%</strong><p>${escapeHTML(h.date||'')} · ${h.correct}/${h.total} câu đúng · ${h.hints||0} gợi ý · ${escapeHTML(TEST_TYPES[h.mode]||'BÀI KIỂM TRA')}</p></div></div>`).join(''):'<div class="empty">Chưa có lịch sử kiểm tra.</div>';
 }
 
 /* 12 THÌ TIẾNG ANH */
